@@ -19,13 +19,17 @@ step is to set the params for the request :
 	var weather = require('weather-api');
 
 	weather.setLang('it'); 
-	// English - en, Russian - ru, Italian - it, Spanish - es (or sp), Ukrainian - uk (or ua), German - de, Portuguese - pt,Romanian - ro, Polish - pl, Finnish - fi, Dutch - nl, French - fr, Bulgarian - bg, Swedish - sv (or se), Chinese Traditional - zh_tw, Chinese Simplified - zh (or zh_cn), Turkish - tr, Croatian - hr, Catalan - ca
+	// English - en, Russian - ru, Italian - it, Spanish - es (or sp), Ukrainian - uk (or ua), 
+	// German - de, Portuguese - pt,Romanian - ro, Polish - pl, Finnish - fi, Dutch - nl, French - fr, 
+	// Bulgarian - bg, Swedish - sv (or se), Chinese Traditional - zh_tw, Chinese Simplified - zh (or zh_cn), 
+	// Turkish - tr, Croatian - hr, Catalan - ca
 
 	weather.setCity('Fairplay');
 
 	// 'metric'  'internal'  'imperial'
  	weather.setUnits('metric'); 
 
+	// check http://openweathermap.org/appid#get for get the APPID 
  	weather.setAPIID('ssdglnsdogdh441s91gs6');
 
 
@@ -75,7 +79,7 @@ Import the module and start to use the functions :
 
 
 ### Test 
-The package is tested with mocha anc chai, you can find the tests in the /test folder. 
+The package is tested with mocha anc chai, you can find the tests in the /test folder.
 
 
 ### Hystorical Data  (TODO)
