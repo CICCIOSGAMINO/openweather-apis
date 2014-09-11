@@ -76,7 +76,25 @@ Import the module and start to use the functions :
 	weather.getSmartJSON(function(smart){
 		console.log(smart);
 	});
+	
+	
+	/* 
+	
+		this is the JSON object returned by the getSmartJSON() 
+		
+		{
+			temp : 25,
+			humidity : 88,
+			pressure : 101325,
+			description : 'sun',
+			weathercode : 200
+		}
+		
+	*/
 
+### weathercode 
+This field passed in the getSmartJSON is easy to use for build check function, draw the icons ecc, for the complete 
+table about this code go to this link on official [docs][1]. 
 
 ### Test 
 The package is tested with mocha anc chai, you can find the tests in the /test folder.
@@ -86,3 +104,5 @@ The package is tested with mocha anc chai, you can find the tests in the /test f
 
 	
 ### Geographic location (TODO)
+
+[1]:http://openweathermap.org/weather-conditions
