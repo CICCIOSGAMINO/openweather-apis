@@ -123,6 +123,7 @@
 			smartJSON.humidity = jsonObj.main.humidity;
 			smartJSON.pressure = jsonObj.main.pressure;
 			smartJSON.description = (jsonObj.weather)[0].description;
+			smartJSON.weathercode = ((jsonObj.weather[0]).id);
 			return callback(smartJSON); 
 		})
 	}
