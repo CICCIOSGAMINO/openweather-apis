@@ -1,0 +1,25 @@
+{
+  "name": "openweather-apis",
+  "version": "1.0.0",
+  "description": "simple APIs to use the basic OpenWeatherMap.org servicies ",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:CICCIOSGAMINO/openweather-apis.git"
+  },
+  "keywords": [
+    "openweather",
+    "openweathermap",
+    "meteo",
+    "apis"
+  ],
+  "author": "Marco Canali - CiccioSgamino <marco.canali@gmail.com> (https://github.com/CICCIOSGAMINO)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CICCIOSGAMINO/openweather-apis/issues"
+  },
+  "homepage": "https://github.com/CICCIOSGAMINO/openweather-apis"
+}
