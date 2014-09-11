@@ -71,12 +71,46 @@ Import the module and start to use the functions :
 	weather.getAllWeather(function(JSONObj){
 		console.log(JSONObj);
 	});
+	
+	/*
+	
+		return a complete openweathermap.org json object 
+		
+		{"coord":{"lon":139,"lat":35},
+		"sys":{"country":"JP","sunrise":1369769524,"sunset":1369821049},
+		"weather":[{"id":804,"main":"clouds","description":"overcast clouds","icon":"04n"}],
+		"main":{"temp":289.5,"humidity":89,"pressure":1013,"temp_min":287.04,"temp_max":292.04},
+		"wind":{"speed":7.31,"deg":187.002},
+		"rain":{"3h":0},
+		"clouds":{"all":92},
+		"dt":1369824698,
+		"id":1851632,
+		"name":"Shuzenji",
+		"cod":200}
+	
+	*/
 
 	// get a simple JSON Object with temperature, humidity, pressure and description   
 	weather.getSmartJSON(function(smart){
 		console.log(smart);
 	});
+	
+	
+	/* 
+	
+		this is the JSON object returned by the getSmartJSON() 
+		
+		{
+			temp : 25,
+			humidity : 88,
+			pressure : 101325,
+			description : 'sun',
+			weathercode : 200
+		}
+		
+	*/
 
+this JSON object is easy to use and is enougth for a lot of possible use of the weather data, for example the weathercode is easy to use for build check function, draw the icons ecc, for the complete table about this code go to this link on official [docs][1]. 
 
 ### Test 
 The package is tested with mocha anc chai, you can find the tests in the /test folder.
@@ -86,3 +120,5 @@ The package is tested with mocha anc chai, you can find the tests in the /test f
 
 	
 ### Geographic location (TODO)
+
+[1]:http://openweathermap.org/weather-conditions
