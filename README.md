@@ -8,7 +8,7 @@ can easy reach the weather informations you need on over 400k weather stations.
 
 ### Version details
 Main change by version :  
-+ From version 1.1.0 link in the callback for the operational error such as the ClientRequest, HTTPParse and so on .. 
++ From version 1.1.0 link in the callback for the operational error such as the ClientRequest, HTTPParse and so on ..
 
 ### Installation
 
@@ -47,32 +47,32 @@ Import the module and start to use the functions :
 
 
 	// get the HTTP  statusCode of the response es. 200
-	weather.getResponseCode(function(code){
+	weather.getResponseCode(function(err, code){
 		console.log(code);
 	});
 
 	// get the Temperature  
-	weather.getTemperature(function(temp){
+	weather.getTemperature(function(err, temp){
 		console.log(temp);
 	});
 
 	// get the Atm Pressure
-	weather.getPressure(function(pres){
+	weather.getPressure(function(err, pres){
 		console.log(pres);
 	});
 
 	// get the Humidity
-	weather.getTemperature(function(hum){
+	weather.getTemperature(function(err, hum){
 		console.log(hum);
 	});
 
 	// get the Description of the weather condition
-	weather.getDescription(function(desc){
+	weather.getDescription(function(err, desc){
 		console.log(desc);
 	});
 
 	// get all the JSON file returned from server (rich of info)
-	weather.getAllWeather(function(JSONObj){
+	weather.getAllWeather(function(err, JSONObj){
 		console.log(JSONObj);
 	});
 
@@ -114,10 +114,25 @@ Import the module and start to use the functions :
 
 	*/
 
-this JSON object is easy to use and is enougth for a lot of possible use of the weather data, for example the weathercode is easy to use for build check function, draw the icons ecc, for the complete table about this code go to this link on official [docs][1].
+this JSON object is easy to use and is enougth for a lot of possible use of the weather data, for example the
+weathercode is easy to use for build check function, draw the icons ecc, for the complete table about this code
+go to this link on official [docs][1].
+
+
+### Error
+Use the callback to check if a error raise on the request (HTTP server unreachable or other connection, request problem),
+you need to manage the error on the request, for example :
+
+		weather.getTemperature(function(err, temp){
+			if(err) console.log(err);
+
+			// normal execution with no error
+			});
+
 
 ### Test
-The package is tested with mocha anc chai, you can find the tests in the /test folder.
+The package is tested with mocha anc chai, you can find the tests in the /test folder. If you need to use more test on the
+library open issue on github repo (THANKS). 
 
 
 ### Hystorical Data  (TODO)
