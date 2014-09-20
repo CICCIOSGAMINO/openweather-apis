@@ -7,8 +7,8 @@ Simple abstraction layer for use the services offered by the OpenWeatherMap.org 
 can easy reach the weather informations you need on over 400k weather stations.
 
 ### Version details
-Main change by version :  
-+ From version 1.1.0 link in the callback for the operational error such as the ClientRequest, HTTPParse and so on ..
+Main change by version (if the first number change, old code you writed is not supported :(   ) :  
++ From version 2.0.0 link in the callback for the operational error such as the ClientRequest, HTTPParse and so on ...
 
 ### Installation
 
@@ -132,7 +132,7 @@ you need to manage the error on the request, for example :
 
 ### Test
 The package is tested with mocha anc chai, you can find the tests in the /test folder. If you need to use more test on the
-library open issue on github repo (THANKS). 
+library open issue on github repo (THANKS).
 
 
 ### Hystorical Data  (TODO)
