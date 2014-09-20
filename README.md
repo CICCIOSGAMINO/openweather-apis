@@ -1,35 +1,39 @@
-OpenWeatherMap.org APIs 
+OpenWeatherMap.org APIs
 =======================
 
 
-### Intro 
-Simple abstraction layer for use the services offered by the OpenWeatherMap.org website through its API's. You 
-can easy reach the weather informations you need on over 400k weather stations. 
+### Intro
+Simple abstraction layer for use the services offered by the OpenWeatherMap.org website through its API's. You
+can easy reach the weather informations you need on over 400k weather stations.
 
-### Installation 
+### Version details
+Main change by version :  
++ From version 1.1.0 link in the callback for the operational error such as the ClientRequest, HTTPParse and so on .. 
+
+### Installation
 
 	npm install openweather-api --save
 
 
-### How to Use 
+### How to Use
 
-Install the package with npm, import with the require statment in the app and start to use the apis. First 
-step is to set the params for the request : 
+Install the package with npm, import with the require statment in the app and start to use the apis. First
+step is to set the params for the request :
 
 	var weather = require('weather-api');
 
-	weather.setLang('it'); 
-	// English - en, Russian - ru, Italian - it, Spanish - es (or sp), Ukrainian - uk (or ua), 
-	// German - de, Portuguese - pt,Romanian - ro, Polish - pl, Finnish - fi, Dutch - nl, French - fr, 
-	// Bulgarian - bg, Swedish - sv (or se), Chinese Traditional - zh_tw, Chinese Simplified - zh (or zh_cn), 
+	weather.setLang('it');
+	// English - en, Russian - ru, Italian - it, Spanish - es (or sp), Ukrainian - uk (or ua),
+	// German - de, Portuguese - pt,Romanian - ro, Polish - pl, Finnish - fi, Dutch - nl, French - fr,
+	// Bulgarian - bg, Swedish - sv (or se), Chinese Traditional - zh_tw, Chinese Simplified - zh (or zh_cn),
 	// Turkish - tr, Croatian - hr, Catalan - ca
 
 	weather.setCity('Fairplay');
 
 	// 'metric'  'internal'  'imperial'
- 	weather.setUnits('metric'); 
+ 	weather.setUnits('metric');
 
-	// check http://openweathermap.org/appid#get for get the APPID 
+	// check http://openweathermap.org/appid#get for get the APPID
  	weather.setAPIID('ssdglnsdogdh441s91gs6');
 
 
@@ -38,11 +42,11 @@ step is to set the params for the request :
 ### Current Weather Data
 Using the following requests to API you can get current weather data for any location on the Earth. Current weather data are updated in real time based on data from global weather providers and more than 40,000 weather stations. Weather data is available in JSON.
 
-### Methods 
-Import the module and start to use the functions : 
+### Methods
+Import the module and start to use the functions :
 
 
-	// get the HTTP  statusCode of the response es. 200 
+	// get the HTTP  statusCode of the response es. 200
 	weather.getResponseCode(function(code){
 		console.log(code);
 	});
@@ -52,7 +56,7 @@ Import the module and start to use the functions :
 		console.log(temp);
 	});
 
-	// get the Atm Pressure   
+	// get the Atm Pressure
 	weather.getPressure(function(pres){
 		console.log(pres);
 	});
@@ -62,7 +66,7 @@ Import the module and start to use the functions :
 		console.log(hum);
 	});
 
-	// get the Description of the weather condition   
+	// get the Description of the weather condition
 	weather.getDescription(function(desc){
 		console.log(desc);
 	});
@@ -71,11 +75,11 @@ Import the module and start to use the functions :
 	weather.getAllWeather(function(JSONObj){
 		console.log(JSONObj);
 	});
-	
+
 	/*
-	
-		return a complete openweathermap.org json object 
-		
+
+		return a complete openweathermap.org json object
+
 		{"coord":{"lon":139,"lat":35},
 		"sys":{"country":"JP","sunrise":1369769524,"sunset":1369821049},
 		"weather":[{"id":804,"main":"clouds","description":"overcast clouds","icon":"04n"}],
@@ -87,19 +91,19 @@ Import the module and start to use the functions :
 		"id":1851632,
 		"name":"Shuzenji",
 		"cod":200}
-	
+
 	*/
 
-	// get a simple JSON Object with temperature, humidity, pressure and description   
+	// get a simple JSON Object with temperature, humidity, pressure and description
 	weather.getSmartJSON(function(smart){
 		console.log(smart);
 	});
-	
-	
-	/* 
-	
-		this is the JSON object returned by the getSmartJSON() 
-		
+
+
+	/*
+
+		this is the JSON object returned by the getSmartJSON()
+
 		{
 			temp : 25,
 			humidity : 88,
@@ -107,18 +111,18 @@ Import the module and start to use the functions :
 			description : 'sun',
 			weathercode : 200
 		}
-		
+
 	*/
 
-this JSON object is easy to use and is enougth for a lot of possible use of the weather data, for example the weathercode is easy to use for build check function, draw the icons ecc, for the complete table about this code go to this link on official [docs][1]. 
+this JSON object is easy to use and is enougth for a lot of possible use of the weather data, for example the weathercode is easy to use for build check function, draw the icons ecc, for the complete table about this code go to this link on official [docs][1].
 
-### Test 
+### Test
 The package is tested with mocha anc chai, you can find the tests in the /test folder.
 
 
 ### Hystorical Data  (TODO)
 
-	
+
 ### Geographic location (TODO)
 
 [1]:http://openweathermap.org/weather-conditions
