@@ -1,6 +1,6 @@
 {
   "name": "openweather-apis",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "simple APIs to use the basic OpenWeatherMap.org servicies ",
   "main": "index.js",
   "scripts": {

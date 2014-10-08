@@ -7,18 +7,26 @@ Simple abstraction layer for use the services offered by the OpenWeatherMap.org 
 can easy reach the weather informations you need on over 400k weather stations.
 
 ### Version details
-Main change by version (if the first number change, old code you writed is not supported :(   ) :  
+Main changes by version (if the first number change, old code you have write is not supported :(   ) :
+
++ First version  
++ From version 1.2.0 minor buds fix  
 + From version 2.0.0 link in the callback for the operational error such as the ClientRequest, HTTPParse and so on ...
++ From version 2.0.1 minor fix (no code impact)
 
 ### Installation
+
+	npm install openweather-api
+
+or install and save in the package.json
 
 	npm install openweather-api --save
 
 
 ### How to Use
 
-Install the package with npm, import with the require statment in the app and start to use the apis. First
-step is to set the params for the request :
+Install the package with npm, import with the require statement in the app and start to use the apis. First
+step is set the params for the request (request the api-key at http://openweathermap.org/register ):
 
 	var weather = require('weather-api');
 
