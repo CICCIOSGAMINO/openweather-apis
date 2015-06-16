@@ -49,6 +49,13 @@
     return config.city;
   };
 
+  weather.getCoordinate = function(){
+    return {
+      "latitude": config.latitude,
+      "longitude": config.longitude
+    };
+  };
+
   weather.getUnits = function(){
     return config.units;
   };
