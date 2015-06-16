@@ -169,11 +169,11 @@
   }
 
   function buildPath(){
-    return '/data/2.5/weather?' + getCoordinate() + '&units=' + config.units + '&lang=' + config.lan + '&APPID=' + config.APPID + '&mode=json';
+    return '/data/2.5/weather?' + getCoordinate() + '&units=' + config.units + '&lang=' + config.lan + '&mode=json&APPID=' + config.APPID;
   }
 
   function buildPathForecastFor(days){
-    return '/data/2.5/forecast/daily?' + getCoordinate() + '&cnt=' + days + '&units=' + config.units + '&lang=' + config.lan + '&APPID=' + config.APPID + '&mode=json';
+    return '/data/2.5/forecast/daily?' + getCoordinate() + '&cnt=' + days + '&units=' + config.units + '&lang=' + config.lan + '&mode=json&APPID=' + config.APPID;
   }
 
   function getData(url, callback){
