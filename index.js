@@ -16,78 +16,79 @@
     path: '/data/2.5/weather?q=fairplay'
   };
 
+  var weather = exports;
 
-  // exports(set)  --------------------------------------------  exports(set)  ---------------------------------------------
-  exports.setLang = function(lang){
+  // weather(set)  --------------------------------------------  weather(set)  ---------------------------------------------
+  weather.setLang = function(lang){
     config.lan = lang.toLowerCase();
   };
 
-  exports.setCity = function(city){
+  weather.setCity = function(city){
     config.city = city.toLowerCase();
   };
 
-  exports.setUnits = function(units){
+  weather.setUnits = function(units){
     config.units = units.toLowerCase();
   };
 
-  exports.setAPPID = function(appid){
+  weather.setAPPID = function(appid){
     config.APPID = appid;
   };
 
-  // export(get)  ---------------------------------------------  exports(get)  ---------------------------------------------
-  exports.getLang = function(){
+  // weather(get)  ---------------------------------------------  weather(get)  ---------------------------------------------
+  weather.getLang = function(){
     return config.lan;
   };
 
-  exports.getCity = function(){
+  weather.getCity = function(){
     return config.city;
   };
 
-  exports.getUnits = function(){
+  weather.getUnits = function(){
     return config.units;
   };
 
-  exports.getFormat = function(){
+  weather.getFormat = function(){
     return config.format;
   };
 
-  exports.getError = function(callback){
+  weather.getError = function(callback){
      getErr(callback);
   };
 
-  exports.getAPPID = function(){
+  weather.getAPPID = function(){
     return config.APPID;
   };
 
 
   // get Response by field (satusCode, )
-  exports.getResponseCode = function(callback){
+  weather.getResponseCode = function(callback){
     getResponseBF('statusCode', callback);
   };
 
   // get temperature
-  exports.getTemperature = function(callback){
+  weather.getTemperature = function(callback){
     getTemp(callback);
   };
 
   // get the atmospheric pressure
-  exports.getPressure = function(callback){
+  weather.getPressure = function(callback){
     getPres(callback);
   };
 
-  exports.getHumidity = function(callback){
+  weather.getHumidity = function(callback){
     getHum(callback);
   };
 
-  exports.getDescription = function(callback){
+  weather.getDescription = function(callback){
     getDesc(callback);
   };
 
-  exports.getAllWeather = function(callback){
+  weather.getAllWeather = function(callback){
     getData(callback);
   };
 
-  exports.getSmartJSON = function(callback){
+  weather.getSmartJSON = function(callback){
     getSmart(callback);
   };
 
