@@ -27,6 +27,11 @@
     config.city = city.toLowerCase();
   };
 
+  weather.setCoordinate = function(latitude, longitude){
+    config.latitude = latitude;
+    config.longitude = longitude;
+  };
+
   weather.setUnits = function(units){
     config.units = units.toLowerCase();
   };
@@ -145,8 +150,15 @@
     });
   }
 
+  function getCoordinate(){
+    var coordinateAvailable = config.latitude && config.longitude;
+    var coordinateQuery = 'q='+config.city;
+    if (coordinateAvailable) coordinateQuery = 'lat='+config.latitude+'&lon='+config.longitude;
+    return coordinateQuery;
+  }
+
   function buildPath(){
-    return '/data/2.5/weather?q=' + config.city + '&units=' + config.units + '&lang=' + config.lan + '&APPID=' + config.APPID;
+    return '/data/2.5/weather?' + getCoordinate() + '&units=' + config.units + '&lang=' + config.lan + '&APPID=' + config.APPID;
   }
 
   function getData(callback){
