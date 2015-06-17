@@ -105,7 +105,7 @@ Import the module and start to use the functions :
 	*/
 	
 	// get 3 days forecast
-	weather.getWeatherForecastFor(3, function(err, obj){
+	weather.getWeatherForecastForDays(3, function(err, obj){
 		console.log(obj);
 	});
 

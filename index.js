@@ -100,8 +100,8 @@
     getData(buildPath(), callback);
   };
 
-  weather.getWeatherForecastFor = function(days, callback){
-    getData(buildPathForecastFor(days), callback);
+  weather.getWeatherForecastForDays = function(days, callback){
+    getData(buildPathForecastForDays(days), callback);
   };
 
   weather.getSmartJSON = function(callback){
@@ -172,7 +172,7 @@
     return '/data/2.5/weather?' + getCoordinate() + '&units=' + config.units + '&lang=' + config.lan + '&mode=json&APPID=' + config.APPID;
   }
 
-  function buildPathForecastFor(days){
+  function buildPathForecastForDays(days){
     return '/data/2.5/forecast/daily?' + getCoordinate() + '&cnt=' + days + '&units=' + config.units + '&lang=' + config.lan + '&mode=json&APPID=' + config.APPID;
   }
 

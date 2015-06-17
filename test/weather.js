@@ -77,7 +77,7 @@ describe('OpenWeatherMap ', function(){
 			});
 		});
 		it('Should present 3 day weather forecast', function(done){
-			weather.getWeatherForecastFor(3, function(err, obj){
+			weather.getWeatherForecastForDays(3, function(err, obj){
 				expect(obj).not.empty;
 				expect(obj.cnt).is.equal(3);
 				expect(obj.list).is.not.empty;
