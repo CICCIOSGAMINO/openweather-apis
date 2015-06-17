@@ -157,5 +157,5 @@ library open issue on github repo (THANKS).
 ### Geographic location (TODO)
 
 ```javascript
-	weather.setCoordinate(50.0467656, 20.0048731);
+weather.setCoordinate(50.0467656, 20.0048731);
 ```
