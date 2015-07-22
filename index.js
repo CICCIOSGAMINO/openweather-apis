@@ -97,7 +97,11 @@
   };
 
   weather.getAllWeather = function(callback){
-    getData(callback);
+    getData(buildPath(), callback);
+  };
+
+  weather.getWeatherForecastForDays = function(days, callback){
+    getData(buildPathForecastForDays(days), callback);
   };
 
   weather.getSmartJSON = function(callback){
@@ -115,31 +119,31 @@
   }
 
   function getPres(callback){
-    getData(function(err,jsonObj){
+    getData(buildPath(), function(err,jsonObj){
       return callback(err,jsonObj.main.pressure);
     });
   }
 
   function getTemp(callback){
-    getData(function(err,jsonObj){
+    getData(buildPath(), function(err,jsonObj){
       return callback(err,jsonObj.main.temp);
     });
   }
 
   function getHum(callback){
-    getData(function(err,jsonObj){
+    getData(buildPath(), function(err,jsonObj){
       return callback(err,jsonObj.main.humidity);
     });
   }
 
   function getDesc(callback){
-    getData(function(err,jsonObj){
+    getData(buildPath(), function(err,jsonObj){
       return callback(err, (jsonObj.weather)[0].description);
     });
   }
 
   function getSmart(callback){
-    getData(function(err,jsonObj){
+    getData(buildPath(), function(err,jsonObj){
       var smartJSON = {};
       smartJSON.temp = jsonObj.main.temp;
       smartJSON.humidity = jsonObj.main.humidity;
@@ -165,11 +169,15 @@
   }
 
   function buildPath(){
-    return '/data/2.5/weather?' + getCoordinate() + '&units=' + config.units + '&lang=' + config.lan + '&APPID=' + config.APPID;
+    return '/data/2.5/weather?' + getCoordinate() + '&units=' + config.units + '&lang=' + config.lan + '&mode=json&APPID=' + config.APPID;
   }
 
-  function getData(callback){
-    options.path = buildPath();
+  function buildPathForecastForDays(days){
+    return '/data/2.5/forecast/daily?' + getCoordinate() + '&cnt=' + days + '&units=' + config.units + '&lang=' + config.lan + '&mode=json&APPID=' + config.APPID;
+  }
+
+  function getData(url, callback){
+    options.path = url;
     http.get(options, function(res){
       res.setEncoding('utf-8');
       res.on('data', function (chunk) {

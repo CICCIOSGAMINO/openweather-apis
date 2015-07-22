@@ -37,6 +37,8 @@ step is set the params for the request (request the api-key at http://openweathe
 	// Turkish - tr, Croatian - hr, Catalan - ca
 
 	weather.setCity('Fairplay');
+	
+	weather.setCoordinate(50.0467656, 20.0048731);
 
 	// 'metric'  'internal'  'imperial'
  	weather.setUnits('metric');
@@ -101,6 +103,12 @@ Import the module and start to use the functions :
 		"cod":200}
 
 	*/
+	
+	// get 3 days forecast
+	weather.getWeatherForecastForDays(3, function(err, obj){
+		console.log(obj);
+	});
+
 
 	// get a simple JSON Object with temperature, humidity, pressure and description
 	weather.getSmartJSON(function(smart){
@@ -148,4 +156,6 @@ library open issue on github repo (THANKS).
 
 ### Geographic location (TODO)
 
-[1]:http://openweathermap.org/weather-conditions
+```javascript
+weather.setCoordinate(50.0467656, 20.0048731);
+```

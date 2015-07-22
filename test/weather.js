@@ -76,6 +76,15 @@ describe('OpenWeatherMap ', function(){
 				done();
 			});
 		});
+		it('Should present 3 day weather forecast', function(done){
+			weather.getWeatherForecastForDays(3, function(err, obj){
+				expect(obj).not.empty;
+				expect(obj.cnt).is.equal(3);
+				expect(obj.list).is.not.empty;
+				expect(obj.list.length).is.equal(3);
+				done();
+			});
+		});
 		it('Should return a smart JSON weather object ', function(done){
 			weather.getSmartJSON(function(err, smart){
 				chai.assert.property(smart, 'temp');
