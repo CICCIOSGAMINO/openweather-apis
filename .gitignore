@@ -1,5 +1,5 @@
 
-# adding the Node.js script to .gitignore file 
+# adding the Node.js script to .gitignore file
 ### Node ###
 # Logs
 logs
@@ -9,6 +9,9 @@ logs
 pids
 *.pid
 *.seed
+
+# My local test file
+test.js
 
 # Grunt intermediate storage (http://gruntjs.com/creating-plugins#storing-task-files)
 .grunt

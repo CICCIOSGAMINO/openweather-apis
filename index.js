@@ -116,31 +116,31 @@
     http.get(options, function(err,data){
         return callback(err,data);
     });
-  }
+  };
 
   function getPres(callback){
     getData(buildPath(), function(err,jsonObj){
       return callback(err,jsonObj.main.pressure);
     });
-  }
+  };
 
   function getTemp(callback){
     getData(buildPath(), function(err,jsonObj){
       return callback(err,jsonObj.main.temp);
     });
-  }
+  };
 
   function getHum(callback){
     getData(buildPath(), function(err,jsonObj){
       return callback(err,jsonObj.main.humidity);
     });
-  }
+  };
 
   function getDesc(callback){
     getData(buildPath(), function(err,jsonObj){
       return callback(err, (jsonObj.weather)[0].description);
     });
-  }
+  };
 
   function getSmart(callback){
     getData(buildPath(), function(err,jsonObj){
@@ -148,33 +148,33 @@
       smartJSON.temp = jsonObj.main.temp;
       smartJSON.humidity = jsonObj.main.humidity;
       smartJSON.pressure = jsonObj.main.pressure;
-      smartJSON.description = (jsonObj.weather)[0].description;
+      smartJSON.description = ((jsonObj.weather[0]).description);
       smartJSON.weathercode = ((jsonObj.weather[0]).id);
       return callback(err,smartJSON);
     });
-  }
+  };
 
   function getResponseBF(field,callback){
     http.get(options, function(res){
       res.on('end', function(){ /* Do nothing, meaby remove this line? */});
       return callback(null, res[field]);
     });
-  }
+  };
 
   function getCoordinate(){
     var coordinateAvailable = config.latitude && config.longitude;
     var coordinateQuery = 'q='+config.city;
     if (coordinateAvailable) coordinateQuery = 'lat='+config.latitude+'&lon='+config.longitude;
     return coordinateQuery;
-  }
+  };
 
   function buildPath(){
     return '/data/2.5/weather?' + getCoordinate() + '&units=' + config.units + '&lang=' + config.lan + '&mode=json&APPID=' + config.APPID;
-  }
+  };
 
   function buildPathForecastForDays(days){
     return '/data/2.5/forecast/daily?' + getCoordinate() + '&cnt=' + days + '&units=' + config.units + '&lang=' + config.lan + '&mode=json&APPID=' + config.APPID;
-  }
+  };
 
   function getData(url, callback){
     options.path = url;
@@ -197,6 +197,6 @@
           return callback(err, null);
       });
     });
-  }
+  };
 
 })();
