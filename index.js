@@ -25,7 +25,7 @@
   }
 
   exports.setCity = function(city){
-    config.city = city.toLowerCase();
+    config.city = encodeURIComponent(city.toLowerCase());
   }
 
   exports.setUnits = function(units){
@@ -159,8 +159,15 @@
     var req = http.get(options, function(res){
       res.setEncoding('utf-8');
       res.on('data', function (chunk) {
+          var parsed = {};
+          // Try-Catch added by Mikael Aspehed
+          try{
+            parsed = JSON.parse(chunk)
+          }catch(e){
+            parsed = {error:e}
+          }
 
-          return callback(null, JSON.parse(chunk));
+          return callback(null,parsed);
       });
 
       res.on('error', function(err){

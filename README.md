@@ -13,6 +13,7 @@ Main changes by version (if the first number change, old code you have write is 
 + From version 1.2.0 minor buds fix  
 + From version 2.0.0 link in the callback for the operational error such as the ClientRequest, HTTPParse and so on ...
 + From version 2.0.1 minor fix (no code impact)
++ From version 2.0.2 important fix - encodeURIComponent for city name, Unexpected token handled as error  
 
 ### Installation
 
