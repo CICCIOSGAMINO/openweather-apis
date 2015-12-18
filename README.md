@@ -8,17 +8,17 @@ can easy reach the weather informations you need on over 400k weather stations.
 
 ### Version details
 Main changes by version (if the first number change, old code you have written is not supported, for
-example between version 1.x.x to versione 2.x.x (I Apologize for that):
+example between version 1.x.x to version 2.x.x (I apologize for that):
 
 + First version  
-+ Version 1.2.0 minor buds fix  
++ Version 1.2.0 minor bugs fix  
 + Version 2.0.0 link in the callback for the operational error such as the ClientRequest, HTTPParse and so on ...
 + Version 2.0.1 minor fix (no code impact)
 + Version 2.0.2 important fix - encodeURIComponent for city name, Unexpected token handled as error
 + Version 2.0.3 minor fix (no code impact)  
 
 ### Installation
-Like all the node package install and mange operation are done by npm (use the -s if you want save
+Like all node packages, install and mange operation are done by npm (use the -s if you want save
 the package in the package.json file) :
 
 ```javascript
@@ -28,7 +28,7 @@ the package in the package.json file) :
 
 ### How to Use
 
-Install the package with npm, import with the require statement in the app and start to use the apis. First
+Install the package with npm, import with the require statement in the app, and start to use the apis. First
 step is set the params for the request (request the api-key at http://openweathermap.org/register ):
 
 ```javascript
@@ -57,7 +57,7 @@ step is set the params for the request (request the api-key at http://openweathe
 
 
 ### Current Weather Data
-Using the following requests to API you can get current weather data for any location on the Earth. Current weather data are updated in real time based on data from global weather providers and more than 40,000 weather stations. Weather data is available in JSON.
+Using the following requests to API, you can get current weather data for any location on the Earth. Current weather data are updated in real time based on data from global weather providers and more than 40,000 weather stations. Weather data is available in JSON.
 
 ### Methods
 Import the module and start to use the functions :
@@ -94,7 +94,7 @@ Import the module and start to use the functions :
 	});
 ```
 
-This function return a complete openweathermap.org json object :
+This function returns a complete openweathermap.org json object :
 
 ```javascript
 		{"coord":{"lon":139,"lat":35},
@@ -135,7 +135,7 @@ This is the simple JSON object returned by the getSmartJSON(), pretty useful !
 		}
 ```
 
-this JSON object is easy to use and is enougth for a lot of possible use of the weather data, for example the
+this JSON object is easy to use and is enough for a lot of possible use of the weather data, for example the
 weathercode is easy to use for build check function, draw the icons ecc, for the complete table about this code
 go to this link on official [docs][1].
 
