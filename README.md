@@ -16,6 +16,7 @@ example between version 1.x.x to version 2.x.x (I apologize for that):
 + Version 2.0.1 minor fix (no code impact)
 + Version 2.0.2 important fix - encodeURIComponent for city name, Unexpected token handled as error
 + Version 2.0.3 minor fix (no code impact)  
++ Version 2.1.0 minor fix (no code impact)
 
 ### Installation
 Like all node packages, install and mange operation are done by npm (use the -s if you want save
