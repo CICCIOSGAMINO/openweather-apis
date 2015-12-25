@@ -141,8 +141,8 @@ go to this link on official [docs][1].
 
 
 ### Geographic location
-Yes of sure you can set the location to get info by the coordinates, first the latitude, second
-the longitude. Sometimes use the coordinates is worst than the city name !
+Yes, of course you can set the location to get info by the coordinates, first the latitude, second
+the longitude. Sometimes use the coordinates are worse than the city name !
 
 ```javascript
 	weather.setCoordinate(50.0467656, 20.0048731);
@@ -152,8 +152,8 @@ the longitude. Sometimes use the coordinates is worst than the city name !
 
 
 ### Error
-Use the callback to check if a error raise on the request (HTTP server unreachable or other connection, request problem),
-you need to manage the error on the request, for example :
+Use the callback to check if an error is raised on the request (HTTP server unreachable or other connection, request problem),
+you need to handle the error on the request, for example :
 
 ```javascript
 		weather.getTemperature(function(err, temp){
@@ -164,5 +164,5 @@ you need to manage the error on the request, for example :
 ```
 
 ### Test
-The package is tested with mocha anc chai, you can find the tests in the /test folder. If you need to use more test on the
-library open issue on github repo (THANKS).
+The package is tested with mocha and chai. You can find the tests in the /test folder. If you need to use more tests on the
+library, open an issue on the github repo (THANKS).
