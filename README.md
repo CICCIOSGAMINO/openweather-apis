@@ -51,7 +51,7 @@ step is set the params for the request (request the api-key at http://openweathe
  	weather.setUnits('metric');
 
 	// check http://openweathermap.org/appid#get for get the APPID
- 	weather.setAPIID('ssdglnsdogdh441s91gs6');
+ 	weather.setAPPID('ssdglnsdogdh441s91gs6');
 ```
 
 
