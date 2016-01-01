@@ -3,8 +3,7 @@ OpenWeatherMap.org APIs
 
 
 ### Intro
-Simple abstraction layer for use the services offered by the OpenWeatherMap.org website through its API's. You
-can easy reach the weather informations you need on over 400k weather stations.
+Simple abstraction layer for use the services offered by the OpenWeatherMap.org website through its API's. You can easy reach the weather informations you need on over 400k weather stations. For get the APPID follow the OpenWeather.org [link][3] and complete the request process.
 
 ### Version details
 Main changes by version (if the first number change, old code you have written is not supported, for
@@ -173,3 +172,5 @@ you need to handle the error on the request, for example :
 ### Test
 The package is tested with mocha and chai. You can find the tests in the /test folder. If you need to use more tests on the
 library, open an issue on the github repo (THANKS).
+
+[3]:http://openweathermap.org/appid
