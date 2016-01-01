@@ -1,7 +1,7 @@
 {
   "name": "openweather-apis",
-  "version": "2.1.0",
-  "description": "simple APIs to use the basic OpenWeatherMap.org servicies ",
+  "version": "2.1.5",
+  "description": "Simple APIs to use with OpenWeatherMap.org free servicies, request a KEIID and start!",
   "main": "index.js",
   "scripts": {
     "test": "mocha"

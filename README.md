@@ -17,6 +17,7 @@ example between version 1.x.x to version 2.x.x (I apologize for that):
 + Version 2.0.2 important fix - encodeURIComponent for city name, Unexpected token handled as error
 + Version 2.0.3 minor fix (no code impact)  
 + Version 2.1.0 minor fix (no code impact)
++ Version 2.1.5 minor fix (no code impact)
 
 ### Installation
 Like all node packages, install and mange operation are done by npm (use the -s if you want save
@@ -24,7 +25,12 @@ the package in the package.json file) :
 
 ```javascript
 	npm install openweather-apis
+
+	// install and save in package.json
 	npm install openweather-apis --save
+
+	// global installation
+	npm install -g openweather-apis
 ```
 
 ### How to Use
@@ -80,7 +86,7 @@ Import the module and start to use the functions :
 	});
 
 	// get the Humidity
-	weather.getTemperature(function(err, hum){
+	weather.getHumidity(function(err, hum){
 		console.log(hum);
 	});
 
