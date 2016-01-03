@@ -1,6 +1,6 @@
 {
   "name": "openweather-apis",
-  "version": "2.1.15",
+  "version": "3.0.0",
   "description": "Simple APIs to use with OpenWeatherMap.org free servicies, request a APPID on http://openweathermap.org/appid and start!",
   "main": "index.js",
   "scripts": {

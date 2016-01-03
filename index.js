@@ -72,12 +72,6 @@
     return config.APPID;
   };
 
-
-  // get Response by field (satusCode, )
-  weather.getResponseCode = function(callback){
-    getResponseBF('statusCode', callback);
-  };
-
   // get temperature
   weather.getTemperature = function(callback){
     getTemp(callback);

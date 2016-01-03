@@ -1,11 +1,12 @@
-OpenWeatherMap.org APIs
-=======================
+# openweather-apis
+Simple APIs to use with OpenWeatherMap.org free servicies, request a APPID on http://openweathermap.org/appid and start!
 
+[![Build Status](https://travis-ci.org/CICCIOSGAMINO/openweather-apis.svg?branch=master)](https://travis-ci.org/CICCIOSGAMINO/openweather-apis)
 
-### Intro
+## Intro
 Simple abstraction layer for use the services offered by the OpenWeatherMap.org website through its API's. You can easy reach the weather informations you need on over 400k weather stations. For get the APPID follow the OpenWeather.org [link][3] and complete the request process.
 
-### Version details
+## Version details
 Main changes by version (if the first number change, old code you have written is not supported, for
 example between version 1.x.x to version 2.x.x (I apologize for that):
 
@@ -17,8 +18,9 @@ example between version 1.x.x to version 2.x.x (I apologize for that):
 + Version 2.0.3 minor fix (no code impact)  
 + Version 2.1.0 minor fix (no code impact)
 + Version 2.1.5 minor fix (no code impact)
++ Version 3.0.0 Removed ResponseCode function (useless)
 
-### Installation
+## Installation
 Like all node packages, install and mange operation are done by npm (use the -s if you want save
 the package in the package.json file) :
 
@@ -32,7 +34,7 @@ the package in the package.json file) :
 	npm install -g openweather-apis
 ```
 
-### How to Use
+## How to Use
 
 Install the package with npm, import with the require statement in the app, and start to use the apis. First
 step is set the params for the request (request the api-key at http://openweathermap.org/register ):
@@ -62,17 +64,13 @@ step is set the params for the request (request the api-key at http://openweathe
 
 
 
-### Current Weather Data
+## Current Weather Data
 Using the following requests to API, you can get current weather data for any location on the Earth. Current weather data are updated in real time based on data from global weather providers and more than 40,000 weather stations. Weather data is available in JSON.
 
-### Methods
+## Methods
 Import the module and start to use the functions :
 
 ```javascript
-	// get the HTTP  statusCode of the response es. 200
-	weather.getResponseCode(function(err, code){
-		console.log(code);
-	});
 
 	// get the Temperature  
 	weather.getTemperature(function(err, temp){
@@ -146,7 +144,7 @@ weathercode is easy to use for build check function, draw the icons ecc, for the
 go to this link on official [docs][1].
 
 
-### Geographic location
+## Geographic location
 Yes, of course you can set the location to get info by the coordinates, first the latitude, second
 the longitude. Sometimes use the coordinates are worse than the city name !
 
@@ -154,10 +152,8 @@ the longitude. Sometimes use the coordinates are worse than the city name !
 	weather.setCoordinate(50.0467656, 20.0048731);
 ```
 
-### Hystorical Data  (TODO)
 
-
-### Error
+## Error
 Use the callback to check if an error is raised on the request (HTTP server unreachable or other connection, request problem),
 you need to handle the error on the request, for example :
 
@@ -169,7 +165,7 @@ you need to handle the error on the request, for example :
 			});
 ```
 
-### Test
+## Test
 The package is tested with mocha and chai. You can find the tests in the /test folder. If you need to use more tests on the
 library, open an issue on the github repo (THANKS).
 
