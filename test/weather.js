@@ -3,17 +3,17 @@ var chai = require('chai');
 var expect = require('chai').expect;
 var weather = require('../index.js');
 
+var myAPPID = '2a1ad423e9fad1a3ceda81fda56b1366';
+
 describe('OpenWeatherMap ', function(){
-	describe('Connection :', function(){
-		it('Should connect with the OpenWeatherMap APIs Services ', function(done){
-			weather.getResponseCode(function(err, status){
-			  chai.assert.equal(status, 200);
-			  done();
-			});
-		});
-	});
 
 	describe('Settings :', function(){
+
+		it('Should set the APPID ', function(){
+			weather.setAPPID(myAPPID);
+			chai.assert.equal(myAPPID, weather.getAPPID());
+		});
+
 		it('Should set the language to Italia (it) ', function(){
 			weather.setLang('it');
 			chai.assert.equal('it', weather.getLang().toLowerCase());
@@ -35,11 +35,6 @@ describe('OpenWeatherMap ', function(){
 			expect(coordinates).be.not.empty;
 			expect(coordinates.latitude).be.equal(50.0467656);
 			expect(coordinates.longitude).be.equal(20.0048731);
-		});
-
-		it('Should set the APPID ', function(){
-			weather.setAPPID('XNDON1111111111');
-			chai.assert.equal('XNDON1111111111', weather.getAPPID());
 		});
 	});
 

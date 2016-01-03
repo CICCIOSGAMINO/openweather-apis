@@ -154,13 +154,6 @@
     });
   };
 
-  function getResponseBF(field,callback){
-    http.get(options, function(res){
-      res.on('end', function(){ /* Do nothing, meaby remove this line? */});
-      return callback(null, res[field]);
-    });
-  };
-
   function getCoordinate(){
     var coordinateAvailable = config.latitude && config.longitude;
     var coordinateQuery = 'q='+config.city;
