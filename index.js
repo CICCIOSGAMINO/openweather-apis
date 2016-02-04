@@ -32,6 +32,10 @@
     config.longitude = longitude;
   };
 
+  weather.setCityId = function(cityid){
+    config.cityId = cityid;
+  };
+
   weather.setUnits = function(units){
     config.units = units.toLowerCase();
   };
@@ -54,6 +58,10 @@
       "latitude": config.latitude,
       "longitude": config.longitude
     };
+  };
+
+  weather.getCityId = function(){
+    return config.cityId;
   };
 
   weather.getUnits = function(){
@@ -150,8 +158,10 @@
 
   function getCoordinate(){
     var coordinateAvailable = config.latitude && config.longitude;
+    var cityIdAvailable = config.cityId;
     var coordinateQuery = 'q='+config.city;
-    if (coordinateAvailable) coordinateQuery = 'lat='+config.latitude+'&lon='+config.longitude;
+    if (cityIdAvailable) coordinateQuery = 'id='+config.cityId;
+    else if (coordinateAvailable) coordinateQuery = 'lat='+config.latitude+'&lon='+config.longitude;
     return coordinateQuery;
   };
 

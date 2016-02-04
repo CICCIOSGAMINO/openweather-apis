@@ -36,6 +36,13 @@ describe('OpenWeatherMap ', function(){
 			expect(coordinates.latitude).be.equal(50.0467656);
 			expect(coordinates.longitude).be.equal(20.0048731);
 		});
+
+		it('Should set the City ID to 4367872', function(){
+			weather.setCityId(4367872);
+			var cityid = weather.getCityId();
+			expect(cityid).be.not.empty;
+			expect(cityid).be.equal(4367872);
+		});
 	});
 
 	describe('Retrive data : ', function(){
