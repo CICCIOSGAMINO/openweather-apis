@@ -54,6 +54,8 @@ step is set the params for the request (request the api-key at http://openweathe
 	weather.setCity('Fairplay');
  	// or set the coordinates (latitude,longitude)
 	weather.setCoordinate(50.0467656, 20.0048731);
+	// or set city by ID (recommended by OpenWeatherMap)
+	weather.setCityId(4367872);
 
 	// 'metric'  'internal'  'imperial'
  	weather.setUnits('metric');
