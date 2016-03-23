@@ -102,6 +102,10 @@
     getData(buildPath(), callback);
   };
 
+  weather.getWeatherForecast = function(callback){
+    getData(buildPathForecast(), callback);
+  };
+
   weather.getWeatherForecastForDays = function(days, callback){
     getData(buildPathForecastForDays(days), callback);
   };
@@ -167,6 +171,10 @@
 
   function buildPath(){
     return '/data/2.5/weather?' + getCoordinate() + '&units=' + config.units + '&lang=' + config.lan + '&mode=json&APPID=' + config.APPID;
+  };
+
+  function buildPathForecast(){
+    return '/data/2.5/forecast?' + getCoordinate() + '&units=' + config.units + '&lang=' + config.lan + '&mode=json&APPID=' + config.APPID;
   };
 
   function buildPathForecastForDays(days){
