@@ -184,13 +184,16 @@
   function getData(url, callback){
     options.path = url;
     http.get(options, function(res){
+      var chunks = '';
       res.setEncoding('utf-8');
-      res.on('data', function (chunk) {
-
+      res.on('data', function(chunk) {
+          chunks += chunk;
+      });
+      res.on('end', function () {
           var parsed = {};
           // Try-Catch added by Mikael Aspehed
           try{
-            parsed = JSON.parse(chunk)
+            parsed = JSON.parse(chunks)
           }catch(e){
             parsed = {error:e}
           }
