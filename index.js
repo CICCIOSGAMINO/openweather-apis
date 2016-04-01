@@ -181,7 +181,7 @@
     return '/data/2.5/forecast/daily?' + getCoordinate() + '&cnt=' + days + '&units=' + config.units + '&lang=' + config.lan + '&mode=json&APPID=' + config.APPID;
   };
 
-  function getData(url, callback){
+  function getData(url, callback, tries){
     options.path = url;
     http.get(options, function(res){
       var chunks = '';
@@ -191,6 +191,11 @@
       });
       res.on('end', function () {
           var parsed = {};
+
+          if (!chunks && (!tries || tries < 3)) {
+              return getData(url, callback, (tries||0)+1);
+          }
+
           // Try-Catch added by Mikael Aspehed
           try{
             parsed = JSON.parse(chunks)
