@@ -186,7 +186,6 @@
     options.path = url;
     http.get(options, function(res){
       var chunks = '';
-      res.setEncoding('utf-8');
       res.on('data', function(chunk) {
           chunks += chunk;
       });
