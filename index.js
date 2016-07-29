@@ -13,7 +13,8 @@
   var http = require('http');
   var options = {
     host : 'api.openweathermap.org',
-    path: '/data/2.5/weather?q=fairplay'
+    path: '/data/2.5/weather?q=fairplay',
+    withCredentials: false
   };
 
   var weather = exports;
