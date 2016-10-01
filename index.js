@@ -13,7 +13,8 @@
   var http = require('http');
   var options = {
     host : 'api.openweathermap.org',
-    path: '/data/2.5/weather?q=fairplay'
+    path: '/data/2.5/weather?q=fairplay',
+    withCredentials: false
   };
 
   var weather = exports;
@@ -185,7 +186,6 @@
     options.path = url;
     http.get(options, function(res){
       var chunks = '';
-      res.setEncoding('utf-8');
       res.on('data', function(chunk) {
           chunks += chunk;
       });
