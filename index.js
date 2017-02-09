@@ -111,6 +111,10 @@
     getData(buildPathForecastForDays(days), callback);
   };
 
+    weather.getWeatherForecastForHours = function(hours, callback){
+        getData(buildPathForecastForHours(hours), callback);
+    };
+
   weather.getSmartJSON = function(callback){
     getSmart(callback);
   };
@@ -180,6 +184,10 @@
 
   function buildPathForecastForDays(days){
     return '/data/2.5/forecast/daily?' + getCoordinate() + '&cnt=' + days + '&units=' + config.units + '&lang=' + config.lan + '&mode=json&APPID=' + config.APPID;
+  };
+
+  function buildPathForecastForHours(hours) {
+      return '/data/2.5/forecast/hour?' + getCoordinate() + '&cnt=' + hours + '&units=' + config.units + '&lang=' + config.lan + '&mode=json&APPID=' + config.APPID;
   };
 
   function getData(url, callback, tries){
