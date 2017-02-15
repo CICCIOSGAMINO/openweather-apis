@@ -13,7 +13,8 @@
   var http = require('http');
   var options = {
     host : 'api.openweathermap.org',
-    path: '/data/2.5/weather?q=fairplay'
+    path: '/data/2.5/weather?q=fairplay',
+    withCredentials: false
   };
 
   var weather = exports;
@@ -102,9 +103,17 @@
     getData(buildPath(), callback);
   };
 
+  weather.getWeatherForecast = function(callback){
+    getData(buildPathForecast(), callback);
+  };
+
   weather.getWeatherForecastForDays = function(days, callback){
     getData(buildPathForecastForDays(days), callback);
   };
+
+    weather.getWeatherForecastForHours = function(hours, callback){
+        getData(buildPathForecastForHours(hours), callback);
+    };
 
   weather.getSmartJSON = function(callback){
     getSmart(callback);
@@ -169,20 +178,35 @@
     return '/data/2.5/weather?' + getCoordinate() + '&units=' + config.units + '&lang=' + config.lan + '&mode=json&APPID=' + config.APPID;
   };
 
+  function buildPathForecast(){
+    return '/data/2.5/forecast?' + getCoordinate() + '&units=' + config.units + '&lang=' + config.lan + '&mode=json&APPID=' + config.APPID;
+  };
+
   function buildPathForecastForDays(days){
     return '/data/2.5/forecast/daily?' + getCoordinate() + '&cnt=' + days + '&units=' + config.units + '&lang=' + config.lan + '&mode=json&APPID=' + config.APPID;
   };
 
-  function getData(url, callback){
+  function buildPathForecastForHours(hours) {
+      return '/data/2.5/forecast/hour?' + getCoordinate() + '&cnt=' + hours + '&units=' + config.units + '&lang=' + config.lan + '&mode=json&APPID=' + config.APPID;
+  };
+
+  function getData(url, callback, tries){
     options.path = url;
     http.get(options, function(res){
-      res.setEncoding('utf-8');
-      res.on('data', function (chunk) {
-
+      var chunks = '';
+      res.on('data', function(chunk) {
+          chunks += chunk;
+      });
+      res.on('end', function () {
           var parsed = {};
+
+          if (!chunks && (!tries || tries < 3)) {
+              return getData(url, callback, (tries||0)+1);
+          }
+
           // Try-Catch added by Mikael Aspehed
           try{
-            parsed = JSON.parse(chunk)
+            parsed = JSON.parse(chunks)
           }catch(e){
             parsed = {error:e}
           }
