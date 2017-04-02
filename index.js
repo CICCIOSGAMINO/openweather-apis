@@ -170,7 +170,7 @@
       }
 
       if(jsonObj.rain){
-        let rain3h = jsonObj.rain;
+        var rain3h = jsonObj.rain;
         smartJSON.rain = Math.round(rain3h['3h'] / 3);
       }
       
