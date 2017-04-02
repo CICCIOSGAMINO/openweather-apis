@@ -161,6 +161,19 @@
       smartJSON.pressure = jsonObj.main.pressure;
       smartJSON.description = ((jsonObj.weather[0]).description);
       smartJSON.weathercode = ((jsonObj.weather[0]).id);
+
+      // return the rain in mm if present 
+      if(jsonObj.precipitation){
+        smartJSON.rain = jsonObj.precipitation.value;
+      }else {
+        smartJSON.rain = 0;
+      }
+
+      if(jsonObj.rain){
+        let rain3h = jsonObj.rain;
+        smartJSON.rain = Math.round(rain3h['3h'] / 3);
+      }
+      
       return callback(err,smartJSON);
     });
   };

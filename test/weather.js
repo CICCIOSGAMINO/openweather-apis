@@ -78,6 +78,24 @@ describe('OpenWeatherMap ', function(){
 				done();
 			});
 		});
+
+		it('Should present the rain in mm of last hour if present ', function(done) {
+			weather.getSmartJSON(function(err, jsonObj) {
+				if(jsonObj.rain){
+					chai.assert.typeOf(jsonObj.rain['3h'], 'number');
+				}
+				if(jsonObj.precipitation){
+					chai.assert.typeOf(jsonObj.precipitation.value, 'number');
+				}
+
+				if(!(jsonObj.rain || jsonObj.precipitation)) {
+					chai.assert.equal(jsonObj.rain, 0);
+				}
+				
+				done();
+			});
+		});
+
 		it('Should present short-term weather forecast', function(done){
 			weather.getWeatherForecast(function(err, obj){
 				expect(obj).not.empty;
@@ -95,15 +113,15 @@ describe('OpenWeatherMap ', function(){
 				done();
 			});
 		});
-        it('Should present 7 hours weather forecast', function(done){
-            weather.getWeatherForecastForHours(7, function(err, obj){
-                expect(obj).not.empty;
-                expect(obj.cnt).is.equal(7);
-                expect(obj.list).is.not.empty;
-                expect(obj.list.length).is.equal(7);
-                done();
-            });
-        });
+    it('Should present 7 hours weather forecast', function(done){
+      weather.getWeatherForecastForHours(7, function(err, obj){
+        expect(obj).not.empty;
+        expect(obj.cnt).is.equal(7);
+        expect(obj.list).is.not.empty;
+        expect(obj.list.length).is.equal(7);
+        done();
+      });
+    });
 		it('Should return a smart JSON weather object ', function(done){
 			weather.getSmartJSON(function(err, smart){
 				chai.assert.property(smart, 'temp');

@@ -19,6 +19,7 @@ example between version 1.x.x to version 2.x.x (I apologize for that):
 + Version 2.1.0 minor fix (no code impact)
 + Version 2.1.5 minor fix (no code impact)
 + Version 3.0.0 Removed ResponseCode function (useless)
++ Version 3.3.0 get the rain in present in getSmartJSON 
 
 ## Installation
 Like all node packages, install and mange operation are done by npm (use the -s if you want save
@@ -129,7 +130,8 @@ This function returns a complete openweathermap.org json object :
 	});
 ```
 
-This is the simple JSON object returned by the getSmartJSON(), pretty useful !
+This is the simple JSON object returned by the getSmartJSON(), pretty useful ! The rain 
+value can be zero if not measured or a mesured value. 
 
 ```javascript
 		{
@@ -137,6 +139,7 @@ This is the simple JSON object returned by the getSmartJSON(), pretty useful !
 			humidity : 88,
 			pressure : 101325,
 			description : 'sun',
+			rain: 4,
 			weathercode : 200
 		}
 ```
