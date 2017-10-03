@@ -37,6 +37,10 @@
     config.cityId = cityid;
   };
 
+  weather.setZipCode = function(zip){
+    config.zip = zip;
+  };
+
   weather.setUnits = function(units){
     config.units = units.toLowerCase();
   };
@@ -63,6 +67,10 @@
 
   weather.getCityId = function(){
     return config.cityId;
+  };
+
+  weather.getZipCode = function(){
+    return config.zip;
   };
 
   weather.getUnits = function(){
@@ -183,6 +191,7 @@
     var cityIdAvailable = config.cityId;
     var coordinateQuery = 'q='+config.city;
     if (cityIdAvailable) coordinateQuery = 'id='+config.cityId;
+    if (config.zip) coordinateQuery = 'zip='+config.zip;
     else if (coordinateAvailable) coordinateQuery = 'lat='+config.latitude+'&lon='+config.longitude;
     return coordinateQuery;
   };
