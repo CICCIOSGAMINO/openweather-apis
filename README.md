@@ -58,6 +58,9 @@ step is set the params for the request (request the api-key at http://openweathe
 	// or set city by ID (recommended by OpenWeatherMap)
 	weather.setCityId(4367872);
 
+    // or set zip code
+	weather.setZipCode(33615);
+
 	// 'metric'  'internal'  'imperial'
  	weather.setUnits('metric');
 
