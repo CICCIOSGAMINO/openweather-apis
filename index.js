@@ -214,7 +214,7 @@
 
   function getData(url, callback, tries){
     options.path = url;
-    http.get(options, function(res){
+    var conn = http.get(options, function(res){
       var chunks = '';
       res.on('data', function(chunk) {
           chunks += chunk;
@@ -240,6 +240,10 @@
           return callback(err, null);
       });
     });
-  };
+
+    conn.on('error', function(err){
+      return callback(err, null);
+    });
+  }
 
 })();
