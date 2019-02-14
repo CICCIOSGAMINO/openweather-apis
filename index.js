@@ -1,3 +1,4 @@
+/*jshint esversion: 6,node: true,-W041: false */
 // weather.js - APIs for openweathermap.org
 (function(){
 
@@ -26,7 +27,7 @@
 
   weather.setCity = function(city){
     config.city = encodeURIComponent(city.toLowerCase());
-  }
+  };
 
   weather.setCoordinate = function(latitude, longitude){
     config.latitude = latitude;
@@ -135,31 +136,31 @@
     http.get(options, function(err,data){
         return callback(err,data);
     });
-  };
+  }
 
   function getPres(callback){
     getData(buildPath(), function(err,jsonObj){
       return callback(err,jsonObj.main.pressure);
     });
-  };
+  }
 
   function getTemp(callback){
     getData(buildPath(), function(err,jsonObj){
       return callback(err,jsonObj.main.temp);
     });
-  };
+  }
 
   function getHum(callback){
     getData(buildPath(), function(err,jsonObj){
       return callback(err,jsonObj.main.humidity);
     });
-  };
+  }
 
   function getDesc(callback){
     getData(buildPath(), function(err,jsonObj){
       return callback(err, (jsonObj.weather)[0].description);
     });
-  };
+  }
 
   function getSmart(callback){
     getData(buildPath(), function(err,jsonObj){
@@ -184,7 +185,7 @@
       
       return callback(err,smartJSON);
     });
-  };
+  }
 
   function getCoordinate(){
     var coordinateAvailable = config.latitude && config.longitude;
@@ -194,27 +195,27 @@
     if (config.zip) coordinateQuery = 'zip='+config.zip;
     else if (coordinateAvailable) coordinateQuery = 'lat='+config.latitude+'&lon='+config.longitude;
     return coordinateQuery;
-  };
+  }
 
   function buildPath(){
     return '/data/2.5/weather?' + getCoordinate() + '&units=' + config.units + '&lang=' + config.lan + '&mode=json&APPID=' + config.APPID;
-  };
+  }
 
   function buildPathForecast(){
     return '/data/2.5/forecast?' + getCoordinate() + '&units=' + config.units + '&lang=' + config.lan + '&mode=json&APPID=' + config.APPID;
-  };
+  }
 
   function buildPathForecastForDays(days){
     return '/data/2.5/forecast/daily?' + getCoordinate() + '&cnt=' + days + '&units=' + config.units + '&lang=' + config.lan + '&mode=json&APPID=' + config.APPID;
-  };
+  }
 
   function buildPathForecastForHours(hours) {
       return '/data/2.5/forecast/hour?' + getCoordinate() + '&cnt=' + hours + '&units=' + config.units + '&lang=' + config.lan + '&mode=json&APPID=' + config.APPID;
-  };
+  }
 
   function getData(url, callback, tries){
     options.path = url;
-    http.get(options, function(res){
+    var conn = http.get(options, function(res){
       var chunks = '';
       res.on('data', function(chunk) {
           chunks += chunk;
@@ -228,9 +229,9 @@
 
           // Try-Catch added by Mikael Aspehed
           try{
-            parsed = JSON.parse(chunks)
+            parsed = JSON.parse(chunks);
           }catch(e){
-            parsed = {error:e}
+            parsed = {error:e};
           }
 
           return callback(null,parsed);
@@ -240,6 +241,10 @@
           return callback(err, null);
       });
     });
-  };
+
+    conn.on('error', function(err){
+      return callback(err, null);
+    });
+  }
 
 })();
