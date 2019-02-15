@@ -20,6 +20,7 @@ example between version 1.x.x to version 2.x.x (I apologize for that):
 + Version 2.1.5 minor fix (no code impact)
 + Version 3.0.0 Removed ResponseCode function (useless)
 + Version 3.3.0 get the rain in present in getSmartJSON 
++ Version 4.0.0 Fix unhandled exception #26
 
 ## Installation
 Like all node packages, install and mange operation are done by npm (use the -s if you want save
