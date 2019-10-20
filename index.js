@@ -7,14 +7,17 @@
     units : 'metric',
     lan : 'it',
     format : 'json',
-    APPID : null
+    APPID : null,
+    ssl: false
   };
 
   // main settings
   var http = require('http');
+  var https = require('https');
+  var querystring = require('querystring');
   var options = {
     host : 'api.openweathermap.org',
-    path: '/data/2.5/weather?q=fairplay',
+    path: '/data/2.5/weather?' + querystring.stringify({q: 'fairplay'}),
     withCredentials: false
   };
 
@@ -48,6 +51,9 @@
 
   weather.setAPPID = function(appid){
     config.APPID = appid;
+  };
+  weather.setSsl = function(ssl){
+    config.ssl = ssl;
   };
 
   // weather(get)  ---------------------------------------------  weather(get)  ---------------------------------------------
@@ -90,6 +96,10 @@
     return config.APPID;
   };
 
+  weather.getSsl = function(){
+    return config.ssl;
+  };
+
   // get temperature
   weather.getTemperature = function(callback){
     getTemp(callback);
@@ -120,21 +130,24 @@
     getData(buildPathForecastForDays(days), callback);
   };
 
-    weather.getWeatherForecastForHours = function(hours, callback){
-        getData(buildPathForecastForHours(hours), callback);
-    };
+  weather.getWeatherForecastForHours = function(hours, callback){
+    getData(buildPathForecastForHours(hours), callback);
+  };
 
   weather.getSmartJSON = function(callback){
     getSmart(callback);
   };
 
   // active functions()  -------------------------------------  active functions()  --------------------------------------------
+  function getHttp(){
+    return options.ssl ? https : http;
+  }
 
   function getErr(callback){
     // set new path to throw the http exception
     options.path = 'timetocrash';
-    http.get(options, function(err,data){
-        return callback(err,data);
+    getHttp().get(options, function(err,data){
+      return callback(err,data);
     });
   }
 
@@ -190,32 +203,32 @@
   function getCoordinate(){
     var coordinateAvailable = config.latitude && config.longitude;
     var cityIdAvailable = config.cityId;
-    var coordinateQuery = 'q='+config.city;
-    if (cityIdAvailable) coordinateQuery = 'id='+config.cityId;
-    if (config.zip) coordinateQuery = 'zip='+config.zip;
-    else if (coordinateAvailable) coordinateQuery = 'lat='+config.latitude+'&lon='+config.longitude;
-    return coordinateQuery;
+    var coordinateQuery = {q: config.city};
+    if (cityIdAvailable) coordinateQuery = {id: config.cityId};
+    if (config.zip) coordinateQuery = {zip: config.zip};
+    else if (coordinateAvailable) coordinateQuery = {lat: config.latitude, lon: config.longitude};
+    return querystring.stringify(coordinateQuery);
   }
 
   function buildPath(){
-    return '/data/2.5/weather?' + getCoordinate() + '&units=' + config.units + '&lang=' + config.lan + '&mode=json&APPID=' + config.APPID;
+    return '/data/2.5/weather?' + getCoordinate() + '&' + querystring.stringify({units: config.units, lang: config.lan, mode: 'json', APPID: config.APPID});
   }
 
   function buildPathForecast(){
-    return '/data/2.5/forecast?' + getCoordinate() + '&units=' + config.units + '&lang=' + config.lan + '&mode=json&APPID=' + config.APPID;
+    return '/data/2.5/forecast?' + getCoordinate() + '&' + querystring.stringify({units: config.units, lang: config.lan, mode: 'json', APPID: config.APPID});
   }
 
   function buildPathForecastForDays(days){
-    return '/data/2.5/forecast/daily?' + getCoordinate() + '&cnt=' + days + '&units=' + config.units + '&lang=' + config.lan + '&mode=json&APPID=' + config.APPID;
+    return '/data/2.5/forecast/daily?' + getCoordinate() + '&' + querystring.stringify({cnt: days, units: config.units, lang: config.lan, mode: 'json', APPID: config.APPID});
   }
 
   function buildPathForecastForHours(hours) {
-      return '/data/2.5/forecast/hour?' + getCoordinate() + '&cnt=' + hours + '&units=' + config.units + '&lang=' + config.lan + '&mode=json&APPID=' + config.APPID;
+      return '/data/2.5/forecast/hour?' + getCoordinate() + '&' + querystring.stringify({cnt: hours, units: config.units, lang: config.lan, mode: 'json', APPID: config.APPID});
   }
 
   function getData(url, callback, tries){
     options.path = url;
-    var conn = http.get(options, function(res){
+    var conn = getHttp().get(options, function(res){
       var chunks = '';
       res.on('data', function(chunk) {
           chunks += chunk;
