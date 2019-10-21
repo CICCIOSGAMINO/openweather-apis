@@ -48,7 +48,90 @@ describe('OpenWeatherMap ', function(){
 	describe('Retrive data : ', function(){
 		it('Should retrive temperature data ', function(done){
 			weather.getTemperature(function(err, temp){
+				chai.assert.typeOf(temp , 'number');
+				done();
+			});
+		});
+		it('Should retrive pressure data ', function(done){
+			weather.getPressure(function(err, pres){
+				chai.assert.typeOf(pres , 'number');
+				done();
+			});
+		});
+		it('Should retrive humidity data ', function(done){
+			weather.getHumidity(function(err, hum){
+				chai.assert.typeOf(hum , 'number');
+				done();
+			});
+		});
+		it('Should retrive brief description of the weather ', function(done){
+			weather.getDescription(function(err, desc){
+				chai.assert.typeOf(desc  , 'string');
+				done();
+			});
+		});
 
+		it('Should present all the JSON Weather response data ', function(done){
+			weather.getAllWeather(function(err, jsonObj){
+				chai.assert.property(jsonObj , 'weather');
+				done();
+			});
+		});
+
+		it('Should present the rain in mm of last hour if present ', function(done) {
+			weather.getSmartJSON(function(err, jsonObj) {
+				if(jsonObj.rain){
+					chai.assert.typeOf(jsonObj.rain['3h'], 'number');
+				}
+				if(jsonObj.precipitation){
+					chai.assert.typeOf(jsonObj.precipitation.value, 'number');
+				}
+
+				if(!(jsonObj.rain || jsonObj.precipitation)) {
+					chai.assert.equal(jsonObj.rain, 0);
+				}
+				
+				done();
+			});
+		});
+
+		it('Should present short-term weather forecast', function(done){
+			weather.getWeatherForecast(function(err, obj){
+				expect(obj).not.empty;
+                expect(obj.cnt).is.equal(40);
+				expect(obj.list).is.not.empty;
+				done();
+			});
+		});
+		it('Should present 3 day weather forecast', function(done){
+			weather.getWeatherForecastForDays(3, function(err, obj){
+				expect(obj).not.empty;
+				expect(obj.cnt).is.equal(3);
+				expect(obj.list).is.not.empty;
+				expect(obj.list.length).is.equal(3);
+				done();
+			});
+		});
+
+		it('Should return a smart JSON weather object ', function(done){
+			weather.getSmartJSON(function(err, smart){
+				chai.assert.property(smart, 'temp');
+				chai.assert.property(smart, 'humidity');
+				chai.assert.property(smart, 'pressure');
+				chai.assert.property(smart, 'description');
+				done();
+			});
+		});
+	});
+
+	describe('Retrive data with Ssl: ', function(){
+		it('Should set the Ssl to true ', function(){
+			weather.setSsl(true);
+			chai.assert.equal(true, weather.getSsl());
+		});
+
+		it('Should retrive temperature data ', function(done){
+			weather.getTemperature(function(err, temp){
 				chai.assert.typeOf(temp , 'number');
 				done();
 			});
@@ -127,9 +210,9 @@ describe('OpenWeatherMap ', function(){
 
 	describe('Error managment section', function(){
 		it('Should show a HTTP error in the request ',function(){
-				weather.getError(function(err, data){
-						chai.assert.typeOf(err, 'error');
-				});
+			weather.getError(function(err, data){
+				chai.assert.typeOf(err, 'error');
+			});
 		});
 	});
 
