@@ -184,7 +184,7 @@
       smartJSON.description = ((jsonObj.weather[0]).description);
       smartJSON.weathercode = ((jsonObj.weather[0]).id);
 
-      // return the rain in mm if present 
+      // return the rain in mm if present
       if(jsonObj.precipitation){
         smartJSON.rain = jsonObj.precipitation.value;
       }else {
@@ -195,7 +195,7 @@
         var rain3h = jsonObj.rain;
         smartJSON.rain = Math.round(rain3h['3h'] / 3);
       }
-      
+
       return callback(err,smartJSON);
     });
   }
@@ -223,7 +223,7 @@
   }
 
   function buildPathForecastForHours(hours) {
-      return '/data/2.5/forecast/hour?' + getCoordinate() + '&' + querystring.stringify({cnt: hours, units: config.units, lang: config.lan, mode: 'json', APPID: config.APPID});
+      return '/data/2.5/forecast/hourly?' + getCoordinate() + '&' + querystring.stringify({cnt: hours, units: config.units, lang: config.lan, mode: 'json', APPID: config.APPID});
   }
 
   function getData(url, callback, tries){
