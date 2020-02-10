@@ -22,6 +22,7 @@ example between version 1.x.x to version 2.x.x (I apologize for that):
 + Version 3.3.0 get the rain in present in getSmartJSON 
 + Version 4.0.0 Fix unhandled exception #26
 + Version 4.1.0 Add ssl support (default: false) & use querystring.stringify() for path Thanks https://github.com/Ti-Tom
++ Version 4.2.0 Minor Fix Pull request #31 Thanks https://github.com/mikedidomizio
 
 ## Installation
 Like all node packages, install and mange operation are done by npm (use the -s if you want save
