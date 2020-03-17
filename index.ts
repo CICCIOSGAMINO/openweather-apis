@@ -1,95 +1,100 @@
 import * as querystring from 'querystring';
 import * as https from 'https';
+
+interface Coordinates {
+  latitude: string;
+  longitude: string;
+}
+
+interface Response {
+  on(event: string, callback: (chunk: string) => void): void;
+}
+
 export default class Weather {
-    constructor() {
-        // properties 
-        this._defaultCity = 'Bergamo';
-        this._city = this._defaultCity;
-        this._cityId = '';
-        this._zip = '';
-        this._units = 'metric';
-        this._language = 'it';
-        this._format = 'json';
-        this._APPID = '';
-        this._latitude = '';
-        this._longitude = '';
-        this._options = {
-            host: 'api.openweathermap.org',
-            path: '/data/2.5/weather?' + querystring.stringify({ q: this._defaultCity }),
-            withCredentials: false
-        };
-        /*
-        private getTemp(callback: (one: string, two: string)): (err: Error, temp: string)  {
-          getData(buildPath(), function(err,jsonObj){
-            return callback(err,jsonObj.main.temp);
-          });
-        }
-        */
+    // properties 
+    private _defaultCity = 'Bergamo'
+    private _city: string = this._defaultCity;
+    private _cityId: string = '';
+    private _zip: string = ''; 
+    private _units: string = 'metric'; 
+    private _language: string =  'it';
+    private _format: string = 'json';
+    private _APPID: string = '';
+    private _latitude: string = '';
+    private _longitude: string = '';
+
+    private _options = {
+      host: 'api.openweathermap.org',
+      path: '/data/2.5/weather?' + querystring.stringify({q: this._defaultCity}),
+      withCredentials: false
     }
+
     // set methods 
-    setLang(language) {
-        this._language = language;
+    setLang(language: string) {
+      this._language = language;
     }
-    setCity(city) {
-        this._city = encodeURIComponent(city.toLowerCase());
+
+    setCity(city: string) {
+      this._city = encodeURIComponent(city.toLowerCase());
     }
-    setCoordinate(latitude, longitude) {
-        this._latitude = latitude;
-        this._longitude = longitude;
-    }
-    ;
-    setCityId(cityid) {
-        this._cityId = cityid;
-    }
-    ;
-    setZipCode(zip) {
-        this._zip = zip;
-    }
-    ;
-    setUnits(units) {
-        this._units = units.toLowerCase();
-    }
-    ;
-    setAPPID(appid) {
-        this._APPID = appid;
-    }
-    ;
+
+    setCoordinate(latitude: string, longitude: string) {
+      this._latitude = latitude;
+      this._longitude = longitude;
+    };
+  
+    setCityId(cityid: string) {
+      this._cityId = cityid;
+    };
+  
+    setZipCode(zip: string) {
+      this._zip = zip;
+    };
+
+    setUnits(units: string) {
+      this._units = units.toLowerCase();
+    };
+  
+    setAPPID(appid: string) {
+      this._APPID = appid;
+    };
+
     // get method 
-    getLang() {
-        return this._language;
-    }
-    ;
-    getCity() {
-        return this._city;
-    }
-    ;
-    getCoordinate() {
-        return {
-            "latitude": this._latitude,
-            "longitude": this._longitude
-        };
-    }
-    ;
-    getCityId() {
-        return this._cityId;
-    }
-    ;
-    getZipCode() {
-        return this._zip;
-    }
-    ;
-    getUnits() {
-        return this._units;
-    }
-    ;
-    getFormat() {
-        return this._format;
-    }
-    ;
-    getAPPID() {
-        return this._APPID;
-    }
-    ;
+    getLang(): string {
+      return this._language;
+    };
+  
+    getCity(): string{
+      return this._city;
+    };
+  
+    getCoordinate(): Coordinates {
+      return {
+        "latitude": this._latitude,
+        "longitude": this._longitude
+      };
+    };
+  
+    getCityId(): string {
+      return this._cityId;
+    };
+  
+    getZipCode(): string {
+      return this._zip;
+    };
+  
+    getUnits(): string {
+      return this._units;
+    };
+  
+    getFormat(): string {
+      return this._format;
+    };
+
+    getAPPID(): string {
+      return this._APPID;
+    };
+
     /*
     getTemperature(callback) {
       getTemp(callback);
@@ -130,21 +135,39 @@ export default class Weather {
   getSmartJSON(callback) {
     getSmart(callback);
   };
+  */ 
+
+  // private methods 
+  private getData(
+    url: string, 
+    callback: () => void,
+    tries: number
+  ): void {
+
+    this._options.path = url;
+    let connection = https.get(this._options, (res: Response) => {
+      let chunks = ``;
+      res.on('data', (chunk: string) => {
+        chunks += chunk;
+      })
+      res.on('end', () => {
+        console.log(`@CHUNCK > ${chunks}`);
+      })
+    })
+  }
+
+  /*
+  private getTemp(callback: (one: string, two: string)): (err: Error, temp: string)  {
+    getData(buildPath(), function(err,jsonObj){
+      return callback(err,jsonObj.main.temp);
+    });
+  }
   */
-    // private methods 
-    getData(url, callback, tries) {
-        this._options.path = url;
-        let connection = https.get(this._options, (res) => {
-            let chunks = ``;
-            res.on('data', (chunk) => {
-                chunks += chunk;
-            });
-            res.on('end', () => {
-                console.log(`@CHUNCK > ${chunks}`);
-            });
-        });
-    }
+   
+    
 }
+
+
 /* (function(){
 
   var config = {
@@ -356,29 +379,29 @@ export default class Weather {
   }
 
   function buildPath(){
-    return '/data/2.5/weather?' + getCoordinate()
-      + '&'
+    return '/data/2.5/weather?' + getCoordinate() 
+      + '&' 
       + querystring.stringify({units: config.units, lang: config.lan, mode: 'json', APPID: config.APPID});
   }
 
   function buildPathForecast(){
-    return '/data/2.5/forecast?'
-      + getCoordinate()
-      + '&'
+    return '/data/2.5/forecast?' 
+      + getCoordinate() 
+      + '&' 
       + querystring.stringify({units: config.units, lang: config.lan, mode: 'json', APPID: config.APPID});
   }
 
   function buildPathForecastForDays(days){
-    return '/data/2.5/forecast/daily?'
-      + getCoordinate()
-      + '&'
+    return '/data/2.5/forecast/daily?' 
+      + getCoordinate() 
+      + '&' 
       + querystring.stringify({cnt: days, units: config.units, lang: config.lan, mode: 'json', APPID: config.APPID});
   }
 
   function buildPathForecastForHours(hours) {
-      return '/data/2.5/forecast/hourly?'
-        + getCoordinate()
-        + '&'
+      return '/data/2.5/forecast/hourly?' 
+        + getCoordinate() 
+        + '&' 
         + querystring.stringify({cnt: hours, units: config.units, lang: config.lan, mode: 'json', APPID: config.APPID});
   }
 
