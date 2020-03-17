@@ -5,8 +5,9 @@
 
 ## v5.0.0 [20-03-2020]
 - `build`
-  - ES7 Node.js 13
+  - ES2020 Node.js 13
   - Only HTTPS request, HTTP not anymore! 
+  - Same APIs 
   - Bugs fixed 
 
 ## v4.2.0 [] 
