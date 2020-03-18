@@ -21,7 +21,7 @@
     "email": "marco.canali@gmail.com",
     "url": "https://github.com/CICCIOSGAMINO"
   },
-  "license": "MIT",
+  "license": "ISC", 
   "bugs": {
     "url": "https://github.com/CICCIOSGAMINO/openweather-apis/issues"
   },

@@ -2,26 +2,52 @@ import * as querystring from 'querystring';
 import * as https from 'https';
 
 interface Coordinates {
-  latitude: string;
-  longitude: string;
+  latitude: string | null;
+  longitude: string | null;
 }
 
 interface Response {
   on(event: string, callback: (chunk: string) => void): void;
 }
 
-export default class Weather {
+interface OpenWeatherJSONResponse {
+  main: {
+    temp: number;
+    pressure: number;
+    humidity: number;
+    noattribute: string;
+  }
+  weather: {};
+  message: string;
+  nonode: string;
+}
+
+enum OpenWeatherJsonNodeResponseAttribute {
+  'main',
+  'weather',
+  'nonode'
+}
+
+enum OpenWeatherJsonResponseAttribute {
+  'temp',
+  'pressure',
+  'humidity',
+  'description',
+  'noattribute'
+}
+
+export class Weather {
     // properties 
     private _defaultCity = 'Bergamo'
     private _city: string = this._defaultCity;
-    private _cityId: string = '';
-    private _zip: string = ''; 
+    private _cityId: string | null = null;
+    private _zip: string | null = null; 
     private _units: string = 'metric'; 
     private _language: string =  'it';
     private _format: string = 'json';
-    private _APPID: string = '';
-    private _latitude: string = '';
-    private _longitude: string = '';
+    private _APPID: string | null = null;
+    private _latitude: string | null = null;
+    private _longitude: string | null = null;
 
     private _options = {
       host: 'api.openweathermap.org',
@@ -75,11 +101,11 @@ export default class Weather {
       };
     };
   
-    getCityId(): string {
+    getCityId(): string | null {
       return this._cityId;
     };
   
-    getZipCode(): string {
+    getZipCode(): string | null{
       return this._zip;
     };
   
@@ -91,39 +117,38 @@ export default class Weather {
       return this._format;
     };
 
-    getAPPID(): string {
+    getAPPID(): string | null{
       return this._APPID;
     };
 
-    /*
-    getTemperature(callback) {
-      getTemp(callback);
+    getTemperature(callback: (err: {} | null, temperature: string | number | null) => void) {
+      this.getWeatherByNodeAndAttribute(callback, 'main','temp');
     };
   
-    getPressure(callback){
-      getPres(callback);
+    getPressure(callback: (err: {} | null, pressure: string | number | null) => void) {
+      this.getWeatherByNodeAndAttribute(callback, 'main', 'pressure');
     };
   
-    getHumidity(callback) {
-      getHum(callback);
+    
+    getHumidity(callback: (err: {} | null, humidity: string | number | null) => void) {
+      this.getWeatherByNodeAndAttribute(callback, 'main','humidity');
+    };
+    
+    getDescription(callback: (err: {} | null, description: string | number | null) => void) {
+      this.getWeatherByNodeAndAttribute(callback, 'weather', 'description');
     };
 
-    getError(callback) {
-      getErr(callback);
-   };
+   
+    getAllWeather(callback: (err: {} | null, description: string | number | null) => void) {
+      this.getWeatherByNodeAndAttribute(callback, 'nonode', 'noattribute');
+    };
 
-   getDescription(callback) {
-    getDesc(callback);
-  };
 
-  getAllWeather(callback) {
-    getData(buildPath(), callback);
-  };
+    getWeatherForecast(callback: (err: {} | null, jsonObj: any) => void) {
+      this.getForecast(callback);
+    };
 
-  getWeatherForecast(callback) {
-    getData(buildPathForecast(), callback);
-  };
-
+  /* 
   getWeatherForecastForDays(days, callback) {
     getData(buildPathForecastForDays(days), callback);
   };
@@ -135,34 +160,140 @@ export default class Weather {
   getSmartJSON(callback) {
     getSmart(callback);
   };
-  */ 
+  */  
 
-  // private methods 
+  // private methods
+  private getWeatherByNodeAndAttribute(
+    callback: (err: {} | null, value: number | string | null) => void,
+    node: keyof typeof OpenWeatherJsonNodeResponseAttribute, 
+    attribute: keyof typeof OpenWeatherJsonResponseAttribute
+  ) {
+    this.getData(this.buildWeatherUrl(), (err, jsonResponse) => {
+      if(err) {
+        return callback(err, null); 
+      } else {
+
+        // nonode noattribute return all the json response 
+        if(node == 'nonode') {
+          const t: any = jsonResponse;
+          return callback(null, t);
+        }
+
+        const objNode: any = jsonResponse![node];
+
+        if(objNode != undefined) {
+          // openweather returned the data check for weather array (the only different)
+          let objValue: any;
+          if(node == 'weather') {
+            // get first element 
+            objValue = objNode[0][attribute]
+          } else {
+            // get attribute 
+            objValue = objNode[attribute]
+          }
+          return callback(null, objValue);
+        } else {
+          // openweather returned an error response eg. {"cod":401,"message":"Invalid API key ... 
+          return callback(new Error(jsonResponse!.message), null);
+        }
+      }
+    });
+  }
+
+  private getForecast(
+    callback: (err: {} | null, value: number | string | null) => void
+  ) {
+    this.getData(this.buildForecastUrl(), (err, jsonResponse) => {
+      const t: any = jsonResponse;
+      return callback(err, t);
+    })
+
+  }
+
+  private getQueryByBestLocationDetail(): string {
+    let locationQuery;
+    // By cityId
+    if(this._city) {
+      locationQuery = {
+        q: this._city
+      }
+    }
+    if(this._cityId) {
+      locationQuery = {
+        id: this._cityId
+      } 
+    }
+    if(this._zip) {
+      locationQuery = {
+        zip: this._zip
+      }
+    }
+    if(this._latitude && this._longitude) {
+      locationQuery = {
+        lat: this._latitude,
+        lon: this._longitude
+      }
+    }
+    return querystring.stringify(locationQuery);
+  }
+
+  private buildWeatherUrl(): string {
+    // build the URL 
+    const url = '/data/2.5/weather?' 
+      + this.getQueryByBestLocationDetail() 
+      + '&' 
+      + querystring.stringify({
+          units: this._units, 
+          lang: this._language, 
+          mode: this._format, 
+          APPID: this._APPID
+        });
+    return url;
+  }
+
+  private buildForecastUrl(): string {
+    const url = '/data/2.5/forecast?' 
+        + this.getQueryByBestLocationDetail() 
+        + '&' 
+        + querystring.stringify({
+          units: this._units, 
+          lang: this._language, 
+          mode: this._format, 
+          APPID: this._APPID
+        });
+      return url;
+
+  }
+
   private getData(
     url: string, 
-    callback: () => void,
-    tries: number
+    callback: (err: {} | null, response: OpenWeatherJSONResponse | null) => void
   ): void {
 
     this._options.path = url;
     let connection = https.get(this._options, (res: Response) => {
       let chunks = ``;
+      let parsed: object = {};
+
       res.on('data', (chunk: string) => {
         chunks += chunk;
-      })
+      });
       res.on('end', () => {
-        console.log(`@CHUNCK > ${chunks}`);
+        try{
+          return callback(null, JSON.parse(chunks));
+        }catch(err){
+          return callback(err, null);
+        }
+      });
+      res.on('error', (err) => {
+        return callback(err, null);
       })
+    });
+
+    connection.on('error', (err) => {
+      return callback(err, null);
     })
   }
-
-  /*
-  private getTemp(callback: (one: string, two: string)): (err: Error, temp: string)  {
-    getData(buildPath(), function(err,jsonObj){
-      return callback(err,jsonObj.main.temp);
-    });
-  }
-  */
    
     
 }

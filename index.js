@@ -1,30 +1,37 @@
 import * as querystring from 'querystring';
 import * as https from 'https';
-export default class Weather {
+var OpenWeatherJsonNodeResponseAttribute;
+(function (OpenWeatherJsonNodeResponseAttribute) {
+    OpenWeatherJsonNodeResponseAttribute[OpenWeatherJsonNodeResponseAttribute["main"] = 0] = "main";
+    OpenWeatherJsonNodeResponseAttribute[OpenWeatherJsonNodeResponseAttribute["weather"] = 1] = "weather";
+    OpenWeatherJsonNodeResponseAttribute[OpenWeatherJsonNodeResponseAttribute["nonode"] = 2] = "nonode";
+})(OpenWeatherJsonNodeResponseAttribute || (OpenWeatherJsonNodeResponseAttribute = {}));
+var OpenWeatherJsonResponseAttribute;
+(function (OpenWeatherJsonResponseAttribute) {
+    OpenWeatherJsonResponseAttribute[OpenWeatherJsonResponseAttribute["temp"] = 0] = "temp";
+    OpenWeatherJsonResponseAttribute[OpenWeatherJsonResponseAttribute["pressure"] = 1] = "pressure";
+    OpenWeatherJsonResponseAttribute[OpenWeatherJsonResponseAttribute["humidity"] = 2] = "humidity";
+    OpenWeatherJsonResponseAttribute[OpenWeatherJsonResponseAttribute["description"] = 3] = "description";
+    OpenWeatherJsonResponseAttribute[OpenWeatherJsonResponseAttribute["noattribute"] = 4] = "noattribute";
+})(OpenWeatherJsonResponseAttribute || (OpenWeatherJsonResponseAttribute = {}));
+export class Weather {
     constructor() {
         // properties 
         this._defaultCity = 'Bergamo';
         this._city = this._defaultCity;
-        this._cityId = '';
-        this._zip = '';
+        this._cityId = null;
+        this._zip = null;
         this._units = 'metric';
         this._language = 'it';
         this._format = 'json';
-        this._APPID = '';
-        this._latitude = '';
-        this._longitude = '';
+        this._APPID = null;
+        this._latitude = null;
+        this._longitude = null;
         this._options = {
             host: 'api.openweathermap.org',
             path: '/data/2.5/weather?' + querystring.stringify({ q: this._defaultCity }),
             withCredentials: false
         };
-        /*
-        private getTemp(callback: (one: string, two: string)): (err: Error, temp: string)  {
-          getData(buildPath(), function(err,jsonObj){
-            return callback(err,jsonObj.main.temp);
-          });
-        }
-        */
     }
     // set methods 
     setLang(language) {
@@ -90,58 +97,155 @@ export default class Weather {
         return this._APPID;
     }
     ;
-    /*
     getTemperature(callback) {
-      getTemp(callback);
-    };
-  
-    getPressure(callback){
-      getPres(callback);
-    };
-  
+        this.getWeatherByNodeAndAttribute(callback, 'main', 'temp');
+    }
+    ;
+    getPressure(callback) {
+        this.getWeatherByNodeAndAttribute(callback, 'main', 'pressure');
+    }
+    ;
     getHumidity(callback) {
-      getHum(callback);
+        this.getWeatherByNodeAndAttribute(callback, 'main', 'humidity');
+    }
+    ;
+    getDescription(callback) {
+        this.getWeatherByNodeAndAttribute(callback, 'weather', 'description');
+    }
+    ;
+    getAllWeather(callback) {
+        this.getWeatherByNodeAndAttribute(callback, 'nonode', 'noattribute');
+    }
+    ;
+    getWeatherForecast(callback) {
+        this.getForecast(callback);
+    }
+    ;
+    /*
+    getWeatherForecastForDays(days, callback) {
+      getData(buildPathForecastForDays(days), callback);
     };
-
-    getError(callback) {
-      getErr(callback);
-   };
-
-   getDescription(callback) {
-    getDesc(callback);
-  };
-
-  getAllWeather(callback) {
-    getData(buildPath(), callback);
-  };
-
-  getWeatherForecast(callback) {
-    getData(buildPathForecast(), callback);
-  };
-
-  getWeatherForecastForDays(days, callback) {
-    getData(buildPathForecastForDays(days), callback);
-  };
-
-  getWeatherForecastForHours(hours, callback) {
-    getData(buildPathForecastForHours(hours), callback);
-  };
-
-  getSmartJSON(callback) {
-    getSmart(callback);
-  };
-  */
-    // private methods 
-    getData(url, callback, tries) {
+  
+    getWeatherForecastForHours(hours, callback) {
+      getData(buildPathForecastForHours(hours), callback);
+    };
+  
+    getSmartJSON(callback) {
+      getSmart(callback);
+    };
+    */
+    // private methods
+    getWeatherByNodeAndAttribute(callback, node, attribute) {
+        this.getData(this.buildWeatherUrl(), (err, jsonResponse) => {
+            if (err) {
+                return callback(err, null);
+            }
+            else {
+                // nonode noattribute return all the json response 
+                if (node == 'nonode') {
+                    const t = jsonResponse;
+                    return callback(null, t);
+                }
+                const objNode = jsonResponse[node];
+                if (objNode != undefined) {
+                    // openweather returned the data check for weather array (the only different)
+                    let objValue;
+                    if (node == 'weather') {
+                        // get first element 
+                        objValue = objNode[0][attribute];
+                    }
+                    else {
+                        // get attribute 
+                        objValue = objNode[attribute];
+                    }
+                    return callback(null, objValue);
+                }
+                else {
+                    // openweather returned an error response eg. {"cod":401,"message":"Invalid API key ... 
+                    return callback(new Error(jsonResponse.message), null);
+                }
+            }
+        });
+    }
+    getForecast(callback) {
+        this.getData(this.buildForecastUrl(), (err, jsonResponse) => {
+            const t = jsonResponse;
+            return callback(err, t);
+        });
+    }
+    getQueryByBestLocationDetail() {
+        let locationQuery;
+        // By cityId
+        if (this._city) {
+            locationQuery = {
+                q: this._city
+            };
+        }
+        if (this._cityId) {
+            locationQuery = {
+                id: this._cityId
+            };
+        }
+        if (this._zip) {
+            locationQuery = {
+                zip: this._zip
+            };
+        }
+        if (this._latitude && this._longitude) {
+            locationQuery = {
+                lat: this._latitude,
+                lon: this._longitude
+            };
+        }
+        return querystring.stringify(locationQuery);
+    }
+    buildWeatherUrl() {
+        // build the URL 
+        const url = '/data/2.5/weather?'
+            + this.getQueryByBestLocationDetail()
+            + '&'
+            + querystring.stringify({
+                units: this._units,
+                lang: this._language,
+                mode: this._format,
+                APPID: this._APPID
+            });
+        return url;
+    }
+    buildForecastUrl() {
+        const url = '/data/2.5/forecast?'
+            + this.getQueryByBestLocationDetail()
+            + '&'
+            + querystring.stringify({
+                units: this._units,
+                lang: this._language,
+                mode: this._format,
+                APPID: this._APPID
+            });
+        return url;
+    }
+    getData(url, callback) {
         this._options.path = url;
         let connection = https.get(this._options, (res) => {
             let chunks = ``;
+            let parsed = {};
             res.on('data', (chunk) => {
                 chunks += chunk;
             });
             res.on('end', () => {
-                console.log(`@CHUNCK > ${chunks}`);
+                try {
+                    return callback(null, JSON.parse(chunks));
+                }
+                catch (err) {
+                    return callback(err, null);
+                }
             });
+            res.on('error', (err) => {
+                return callback(err, null);
+            });
+        });
+        connection.on('error', (err) => {
+            return callback(err, null);
         });
     }
 }

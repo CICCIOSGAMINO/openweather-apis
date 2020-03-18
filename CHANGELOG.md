@@ -5,10 +5,11 @@
 
 ## v5.0.0 [20-03-2020]
 - `build`
-  - ES2020 Node.js 13
+  - Better errors handling, solved issue #30
   - Only HTTPS request, HTTP not anymore! 
   - Same APIs 
   - Bugs fixed 
+  - index.ts file present
 
 ## v4.2.0 [] 
 - `build` 
