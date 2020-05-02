@@ -29,7 +29,7 @@
   };
 
   weather.setCity = function(city){
-    config.city = encodeURIComponent(city.toLowerCase());
+    config.city = city.toLowerCase();
   };
 
   weather.setCoordinate = function(latitude, longitude){
