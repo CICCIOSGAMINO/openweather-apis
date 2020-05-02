@@ -9,6 +9,7 @@
 
 ## v4.2.2 [05-02-2020]
   - Fix -Close Issue City,CountryCode broken #28
+  - Update - Chai to v4.2.0 instead of v3.4.1 and mocha from v2.3.4 to v7.1.2
 
 ## v4.2.0
   - Fix -Pull request #31 Thanks https://github.com/mikedidomizio

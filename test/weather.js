@@ -3,7 +3,7 @@ var chai = require('chai');
 var expect = require('chai').expect;
 var weather = require('../index.js');
 
-var myAPPID = '2a1ad423e9fad1a3ceda81fda56b1366';
+var myAPPID = 'e58df82a2e41b81975178a27f21319bc';
 
 describe('OpenWeatherMap ', function(){
 
@@ -40,8 +40,7 @@ describe('OpenWeatherMap ', function(){
 		it('Should set the City ID to 4367872', function(){
 			weather.setCityId(4367872);
 			var cityid = weather.getCityId();
-			expect(cityid).be.not.empty;
-			expect(cityid).be.equal(4367872);
+			expect(cityid).to.equal(4367872);
 		});
 	});
 
@@ -204,14 +203,6 @@ describe('OpenWeatherMap ', function(){
 				chai.assert.property(smart, 'pressure');
 				chai.assert.property(smart, 'description');
 				done();
-			});
-		});
-	});
-
-	describe('Error managment section', function(){
-		it('Should show a HTTP error in the request ',function(){
-			weather.getError(function(err, data){
-				chai.assert.typeOf(err, 'error');
 			});
 		});
 	});
