@@ -8,21 +8,9 @@ Simple abstraction layer for use the services offered by the OpenWeatherMap.org 
 
 ## Version details
 Main changes by version (if the first number change, old code you have written is not supported, for
-example between version 1.x.x to version 2.x.x (I apologize for that):
+example between version 1.x.x to version 2.x.x (I apologize for that), all minor/major/fix in: 
 
-+ First version  
-+ Version 1.2.0 minor bugs fix  
-+ Version 2.0.0 link in the callback for the operational error such as the ClientRequest, HTTPParse and so on ...
-+ Version 2.0.1 minor fix (no code impact)
-+ Version 2.0.2 important fix - encodeURIComponent for city name, Unexpected token handled as error
-+ Version 2.0.3 minor fix (no code impact)  
-+ Version 2.1.0 minor fix (no code impact)
-+ Version 2.1.5 minor fix (no code impact)
-+ Version 3.0.0 Removed ResponseCode function (useless)
-+ Version 3.3.0 get the rain in present in getSmartJSON 
-+ Version 4.0.0 Fix unhandled exception #26
-+ Version 4.1.0 Add ssl support (default: false) & use querystring.stringify() for path Thanks https://github.com/Ti-Tom
-+ Version 4.2.0 Minor Fix Pull request #31 Thanks https://github.com/mikedidomizio
+CHANGELOG.md 
 
 ## Installation
 Like all node packages, install and mange operation are done by npm (use the -s if you want save
