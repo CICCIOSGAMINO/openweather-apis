@@ -119,7 +119,7 @@ This function returns a complete openweathermap.org json object :
 
 
 	// get a simple JSON Object with temperature, humidity, pressure and description
-	weather.getSmartJSON(function(smart){
+	weather.getSmartJSON(function(err, smart){
 		console.log(smart);
 	});
 ```
