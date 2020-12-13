@@ -126,6 +126,10 @@
     getData(buildPathForecast(), callback);
   };
 
+  weather.getOneCall = function(callback){
+    getData(buildPathOneCall(), callback);
+  };
+
   weather.getWeatherForecastForDays = function(days, callback){
     getData(buildPathForecastForDays(days), callback);
   };
@@ -212,6 +216,10 @@
 
   function buildPath(){
     return '/data/2.5/weather?' + getCoordinate() + '&' + querystring.stringify({units: config.units, lang: config.lan, mode: 'json', APPID: config.APPID});
+  }
+
+  function buildPathOneCall(){
+    return '/data/2.5/onecall?' + getCoordinate() + '&' + querystring.stringify({units: config.units, lang: config.lan, mode: 'json', APPID: config.APPID});
   }
 
   function buildPathForecast(){
