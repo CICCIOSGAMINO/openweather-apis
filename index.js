@@ -8,7 +8,8 @@
     lan : 'it',
     format : 'json',
     APPID : null,
-    ssl: false
+    ssl: false,
+    exclude: "minutely,hourly,alerts"
   };
 
   // main settings
@@ -55,7 +56,9 @@
   weather.setSsl = function(ssl){
     config.ssl = ssl;
   };
-
+  weather.setExclude = function(exclude) {
+    config.exclude = exclude
+  }
   // weather(get)  ---------------------------------------------  weather(get)  ---------------------------------------------
   weather.getLang = function(){
     return config.lan;
@@ -100,6 +103,10 @@
     return config.ssl;
   };
 
+  weather.getExclude = function(){
+    return config.exclude;
+  };
+
   // get temperature
   weather.getTemperature = function(callback){
     getTemp(callback);
@@ -132,6 +139,10 @@
 
   weather.getWeatherForecastForHours = function(hours, callback){
     getData(buildPathForecastForHours(hours), callback);
+  };
+
+  weather.getWeatherOneCall = function(callback){
+    getData(buildPathOneCall(), callback);
   };
 
   weather.getSmartJSON = function(callback){
@@ -224,6 +235,10 @@
 
   function buildPathForecastForHours(hours) {
       return '/data/2.5/forecast/hourly?' + getCoordinate() + '&' + querystring.stringify({cnt: hours, units: config.units, lang: config.lan, mode: 'json', APPID: config.APPID});
+  }
+
+  function buildPathOneCall(){
+    return '/data/2.5/onecall?' + getCoordinate() + '&' + querystring.stringify({units: config.units, lang: config.lan, exclude: config.exclude, APPID: config.APPID});
   }
 
   function getData(url, callback, tries){
