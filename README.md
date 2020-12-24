@@ -93,6 +93,11 @@ Import the module and start to use the functions :
 	weather.getAllWeather(function(err, JSONObj){
 		console.log(JSONObj);
 	});
+
+	// Adds support for the onecall api endpoint.
+	weather.getWeatherOneCall = function(err, data){
+		
+  };
 ```
 
 This function returns a complete openweathermap.org json object :

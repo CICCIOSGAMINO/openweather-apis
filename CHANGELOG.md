@@ -5,7 +5,11 @@
 ## v5.0.0-pre [undefined]
 `build`
   - Add Typescript code 
-  - Module import style 
+  - Module import style
+
+## v4.4.0 [24-12-2020]
+  - Fix Issue Add support for new OpenWeatherMap One Call API #35
+  - https://github.com/CICCIOSGAMINO/openweather-apis/issues/35
 
 ## v4.2.2 [05-02-2020]
   - Fix -Close Issue City,CountryCode broken #28
