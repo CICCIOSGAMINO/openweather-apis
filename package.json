@@ -1,6 +1,6 @@
 {
   "name": "openweather-apis",
-  "version": "4.4.0",
+  "version": "4.4.1",
   "description": "Simple APIs to use with OpenWeatherMap.org free servicies, request a APPID on http://openweathermap.org/appid and start!",
   "main": "index.js",
   "scripts": {

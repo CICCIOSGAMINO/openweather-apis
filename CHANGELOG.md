@@ -7,6 +7,9 @@
   - Add Typescript code 
   - Module import style
 
+## v4.4.1 [29-12-2020]
+  - Fix - Issue Close https://github.com/CICCIOSGAMINO/openweather-apis/issues/40
+
 ## v4.4.0 [24-12-2020]
   - Fix Issue Add support for new OpenWeatherMap One Call API #35
   - https://github.com/CICCIOSGAMINO/openweather-apis/issues/35
