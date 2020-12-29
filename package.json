@@ -21,17 +21,20 @@
     "email": "marco.canali@gmail.com",
     "url": "https://github.com/CICCIOSGAMINO"
   },
-  "license": "ISC", 
+  "license": "ISC",
   "bugs": {
     "url": "https://github.com/CICCIOSGAMINO/openweather-apis/issues"
   },
   "homepage": "https://github.com/CICCIOSGAMINO/openweather-apis",
   "scripts": {
-    "tsc": "tsc"
+    "test": "mocha"
+  },
+  "dependencies": {
+    "node-fetch": "^2.6.1"
   },
   "devDependencies": {
-    "@types/node": "^13.9.1",
-    "tslint": "^6.1.0",
-    "typescript": "^3.8.3"
+    "chai": "^4.2.0",
+    "lit-element": "^2.4.0",
+    "mocha": "^8.2.1"
   }
 }
