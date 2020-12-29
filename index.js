@@ -188,6 +188,9 @@
 
   function getSmart(callback){
     getData(buildPath(), function(err,jsonObj){
+      if(err){
+        return callback(err,null);
+      }
       var smartJSON = {};
       smartJSON.temp = jsonObj.main.temp;
       smartJSON.humidity = jsonObj.main.humidity;
@@ -249,20 +252,21 @@
           chunks += chunk;
       });
       res.on('end', function () {
+        try{
           var parsed = {};
 
           if (!chunks && (!tries || tries < 3)) {
               return getData(url, callback, (tries||0)+1);
           }
-
-          // Try-Catch added by Mikael Aspehed
-          try{
-            parsed = JSON.parse(chunks);
-          }catch(e){
-            parsed = {error:e};
+          parsed = JSON.parse(chunks);
+          if(res.statusCode >199 && res.statusCode <400){
+            return callback(null,parsed);
+          }else{
+            return callback(new Error(parsed.message||`Request failed with status code: ${res.statusCode}`),null);
           }
-
-          return callback(null,parsed);
+        }catch(e){
+          return callback(e,null);
+        }
       });
 
       res.on('error', function(err){
