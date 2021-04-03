@@ -30,7 +30,7 @@
   };
 
   weather.setCity = function(city){
-    config.city = city.toLowerCase();
+    config.city = city.toString().toLowerCase();
   };
 
   weather.setCoordinate = function(latitude, longitude){
