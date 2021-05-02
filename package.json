@@ -33,8 +33,8 @@
     "node-fetch": "^2.6.1"
   },
   "devDependencies": {
-    "chai": "^4.2.0",
-    "lit-element": "^2.4.0",
-    "mocha": "^8.2.1"
+    "chai": "^4.3.4",
+    "lit": "*",
+    "mocha": "^8.3.2"
   }
 }

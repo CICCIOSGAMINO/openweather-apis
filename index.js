@@ -1,10 +1,22 @@
-let fetch, nodeFetch, Headers, Request, Response
+let fetch, nodeFetch, Headers, Request
 
 export class AsyncWeather {
+  #language = 'it'
+  #state = 'Italy'
+  #city = 'Bergamo'
+  #cityId = ''
+  #zipCode = ''
+  #appId= ''
+  #host = 'https://api.openweathermap.org'
+  #path = '/data/2.5/weather?'
+  #format = 'json'
+  #units = 'metric'
+  #coordinates = {}
+  #withCredentials = false
+
   constructor () {
     return (async () => {
-      // init
-      this._language = 'it'
+      /* 
       this._state = 'Italy'
       this._city = 'Bergamo'
       this._cityId = ''
@@ -14,7 +26,7 @@ export class AsyncWeather {
       this._format = 'json'
       this._units = 'metric'
       this._coordinates = {}
-      this.withCredentials = false
+      this.withCredentials = false */
 
       await this.initFetch()
       return this
@@ -27,86 +39,87 @@ export class AsyncWeather {
   async initFetch () {
     const isBrowser = new Function('try {return this===window}catch(e){ return false}')
     const isNode = new Function('try {return this===global}catch(e){return false}')
-    // tests if global scope is binded to window
+
     if (isBrowser()) {
-      console.log('Running under browser')
+      fetch = window.fetch
+      Headers = window.Headers
+      Request = window.Request
     }
     if (isNode()) {
-      console.log('running under node.js')
+      // import and use node-fetch
       nodeFetch = await import('node-fetch')
-      // init the fetch Native Web APIs for Node.js
       fetch = nodeFetch.default
       Headers = nodeFetch.Headers
       Request = nodeFetch.Request
-      Response = nodeFetch.Response
     }
   }
 
   // methods
   setLang (language) {
-    this._language = String(language)
+    this.#language = String(language)
   }
 
   getLang () {
-    return this._language
+    return this.#language
   }
 
   setCity (city) {
-    this._city = encodeURIComponent(String(city).toLowerCase())
+    this.#city = encodeURIComponent(String(city).toLowerCase())
   }
 
   getCity () {
-    return this._city
+    return this.#city
   }
 
   setCoordinates (latitude, longitude) {
-    this._coordinates = {
+    this.#coordinates = {
       latitude: String(latitude),
       longitude: String(longitude)
     }
   }
 
   getCoordinates () {
-    return this._coordinates
+    return this.#coordinates
   }
 
   setCityId (cityId) {
-    this._cityId = String(cityId)
+    this.#cityId = String(cityId)
   }
 
   getCityId () {
-    return this._cityId
+    return this.#cityId
   }
 
   setZipCode (zipCode) {
-    this._zipCode = String(zipCode)
+    this.#zipCode = String(zipCode)
   }
 
   getZipCode () {
-    return this._zipCode
+    return this.#zipCode
   }
 
   setUnits (units) {
-    this._units = String(units).toLocaleLowerCase()
+    this.#units = String(units).toLocaleLowerCase()
   }
 
   getUnits () {
-    return this._units
+    return this.#units
   }
 
-  setAppId (AppId) {
-    this._AppId = AppId
+  setAppId (appId) {
+    this.#appId = appId
   }
 
   getAppId () {
-    return this._AppId
+    return this.#appId
   }
 
-  // Return the temperature value
+  // Return the promise for temperature value
   getTemperature () {
     const promise = new Promise((resolve, reject) => {
-      this._handleFetch()
+      this.#handleFetch()
         .then(data => {
+          // actual openweather map apis
           if (data.main.temp && typeof data.main.temp === 'number') {
             resolve(data.main.temp)
           } else {
@@ -117,23 +130,23 @@ export class AsyncWeather {
           reject(err)
         })
     })
-
     return promise
   }
 
-  // Request the complete Openweather response Object
+  // Return the unmodified promise returned from fetch
   getAllWeather () {
-    return this._handleFetch()
+    return this.#handleFetch()
   }
 
-  _handleFetch () {
-    const hostPath = `${this._host + this._path}`
+  // easy wrapper arounf the fetch to open-weather endpoint
+  #handleFetch () {
+    const hostPath = `${this.#host + this.#path}`
     const searchParams = new URLSearchParams('')
     searchParams.append('q', 'Bergamo')
-    searchParams.append('units', this._units)
-    searchParams.append('lang', this._language)
-    searchParams.append('mode', this._format)
-    searchParams.append('APPID', this._AppId)
+    searchParams.append('units', this.#units)
+    searchParams.append('lang', this.#language)
+    searchParams.append('mode', this.#format)
+    searchParams.append('APPID', this.#appId)
     // Iterate the search parameters.
     // for (const p of searchParams) {
     //   console.log(p)

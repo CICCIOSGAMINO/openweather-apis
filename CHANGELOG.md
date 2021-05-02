@@ -3,13 +3,13 @@
 <!-- ## Unreleased -->
 <!-- Add new, unreleased items here. -->
 
-## v5.0.0 [20-03-2020]
+## v5.0.0 [02-05-2021]
 - `build`
   - Better errors handling, solved issue #30
   - Only HTTPS request, HTTP not anymore! 
   - Same APIs 
   - Bugs fixed 
-  - index.ts file present
+  - Available in Node.js and Browsers
 
 ## v4.2.0 [] 
 - `build` 
