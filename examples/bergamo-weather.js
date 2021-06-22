@@ -1,8 +1,6 @@
 import { LitElement, html } from 'lit'
-import { resolvePromise } from './directive/resolve-promise'
-import { AsyncWeather } from './index.js'
-
-// const myAppId = process.env['OPENWEATHER_API_KEY'] || ''
+import { resolvePromise } from '../directive/resolve-promise'
+import { AsyncWeather } from '../index.js'
 
 class BergamoWeather extends LitElement {
   static get properties () {
@@ -28,6 +26,11 @@ class BergamoWeather extends LitElement {
       ${this.weatherAPI
           ? resolvePromise(this.weatherAPI.getTemperature())
           : '...'}°C
+
+      <hr>
+      ${this.weatherAPI
+          ? resolvePromise(this.weatherAPI.getAllWeather())
+          : '...'}
     `
   }
 }

@@ -1,12 +1,12 @@
 {
-  "name": "openweather-apis",
+  "name": "@cicciosgamino/openweather-apis",
   "version": "5.0.0",
   "description": "Simple APIs to use with OpenWeatherMap.org free servicies, request a APPID on http://openweathermap.org/appid and start!",
   "main": "index.js",
   "type": "module",
   "repository": {
     "type": "git",
-    "url": "git@github.com:CICCIOSGAMINO/openweather-apis.git"
+    "url": "git+ssh://git@github.com/CICCIOSGAMINO/openweather-apis.git"
   },
   "keywords": [
     "openweather",
@@ -16,12 +16,8 @@
     "weather-api",
     "apis"
   ],
-  "author": {
-    "name": "Marco Canali",
-    "email": "marco.canali@gmail.com",
-    "url": "https://github.com/CICCIOSGAMINO"
-  },
-  "license": "ISC",
+  "author": "Marco Canali <marco.canali@gmail.com> (https://github.com/CICCIOSGAMINO)",
+  "license": "GPL-3.0",
   "bugs": {
     "url": "https://github.com/CICCIOSGAMINO/openweather-apis/issues"
   },
@@ -36,5 +32,8 @@
     "chai": "^4.3.4",
     "lit": "*",
     "mocha": "^8.3.2"
+  },
+  "directories": {
+    "test": "test"
   }
 }

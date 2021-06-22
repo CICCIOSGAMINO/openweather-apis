@@ -47,39 +47,41 @@ describe('OpenweatherInstanceMap Mocha/Chai Tests: ', () => {
 	describe('Retrive data: ', () => {
 		it('Should retrive temperature data >> ', (done) => {
 			weatherInstance.getTemperature()
-				.then(data => {
-					chai.assert.typeOf(temp , 'number')
+				.then(d => {
+					chai.assert.typeOf(d , 'number')
 				})
 				done()
 		})
 
 		it('Should retrive pressure data ', (done) => {
 			weatherInstance.getPressure()
-				.then(data => {
-					chai.assert.typeOf(pres , 'number')
-				})
+				.then(d => chai.assert.typeOf(d , 'number'))
 				done()
 		})
 		
-		it('Should retrive humidity data ', function(done){
-			weatherInstance.getHumidity(function(err, hum){
-				chai.assert.typeOf(hum , 'number');
-				done();
-			});
-		});
-		it('Should retrive brief description of the weatherInstance ', function(done){
-			weatherInstance.getDescription(function(err, desc){
-				chai.assert.typeOf(desc  , 'string');
-				done();
-			});
-		});
+		it('Should retrive humidity data ', (done) => {
+			weatherInstance.getHumidity()
+				.then(d => chai.assert.typeOf(d , 'number'))
+				done()
+		})
 
-		it('Should present all the JSON weatherInstance response data ', function(done){
-			weatherInstance.getAllweatherInstance(function(err, jsonObj){
-				chai.assert.property(jsonObj , 'weatherInstance');
-				done();
-			});
-		});
+		it('Should retrive weather info', (done) => {
+			weatherInstance.getDescription()
+				.then(d => chai.assert.typeOf(d , 'string'))
+				done()
+		})
+
+		it('Should retrive weather brief description', (done) => {
+			weatherInstance.getDescription()
+				.then(d => chai.assert.typeOf(d , 'string'))
+				done()
+		})
+
+		it('Should present all the JSON weatherInstance response data' , (done) => {
+			weatherInstance.getAllWeather()
+				.then(d => chai.assert.property(jsonObj , 'weatherInstance'))
+				done()
+		})
 
 		it('Should present the rain in mm of last hour if present ', function(done) {
 			weatherInstance.getSmartJSON(function(err, jsonObj) {
