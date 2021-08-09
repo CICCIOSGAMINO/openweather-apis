@@ -12,6 +12,7 @@ export class AsyncWeather {
   #format = 'json'
   #units = 'metric'
   #coordinates = {}
+  #SSL = false
   #withCredentials = false
 
   constructor () {
@@ -174,6 +175,24 @@ export class AsyncWeather {
   }
 
   /**
+   * Setter for SSL
+   *
+   * @param {Boolean} SSL - Active SSL
+   */
+  setSSL () {
+    this.#SSL = true
+  }
+
+   /**
+   * Getter for SSL
+   *
+   * @returns {Boolean} - true if active
+   */
+  getSSL () {
+    return this.#SSL
+  }
+
+  /**
    * Function to request the temperature for the location set
    *
    * @returns {Promise<Number>} - Promise that resolve Temperature as Number
@@ -302,6 +321,54 @@ export class AsyncWeather {
     })
   }
 
+  getWeatherForecastForDays () {
+    return new Promise((resolve, reject) => {
+      this.#handleFetch()
+        .then(data => {
+          resolve(JSON.stringify(data))
+        })
+        .catch(err => {
+          reject(err)
+        })
+    })
+  }
+
+  /**
+   * Compact JSON object (SMART) with main Weather data
+   * @returns {Promise<JSON>} - Promise that resolve in Smart Weather JSON data
+   */
+  getSmartJSON () {
+    const p = new Promise((resolve, reject) => {
+      this.#handleFetch()
+        .then(data => {
+          resolve({
+            temp: data?.main?.temp,
+            humidity: data?.main?.humidity,
+            pressure: data?.main?.pressure,
+            description: data.weather[0]?.description,
+            weathercode: data.weather[0]?.id,
+            rain: data?.precipitation
+          })
+
+        })
+        .catch(err => {
+          reject(err)
+        })
+    })
+    return p
+  }
+
+  /**
+   * 
+   * Moke a fake request that raise error
+   */
+   getError () {
+     const p = new Promise((resolve, reject) => {
+       reject('FAKE@ERROR')
+     })
+     return p
+   }
+
   /**
    * Wrapper around the fetch to open-weather endpoint, here the URL is build
    *
@@ -309,15 +376,11 @@ export class AsyncWeather {
   #handleFetch () {
     const hostPath = `${this.#host + this.#path}`
     const searchParams = new URLSearchParams('')
-    searchParams.append('q', 'Bergamo')
+    searchParams.append('q', this.#city)
     searchParams.append('units', this.#units)
     searchParams.append('lang', this.#language)
     searchParams.append('mode', this.#format)
     searchParams.append('APPID', this.#appId)
-    // Iterate the search parameters.
-    // for (const p of searchParams) {
-    //   console.log(p)
-    // }
 
     const requestURL = hostPath + searchParams.toString()
 

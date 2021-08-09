@@ -83,32 +83,92 @@ describe('OpenweatherInstanceMap Mocha/Chai Tests: ', () => {
 				done()
 		})
 
-		it('Should present the rain in mm of last hour if present ', function(done) {
-			weatherInstance.getSmartJSON(function(err, jsonObj) {
-				if(jsonObj.rain){
-					chai.assert.typeOf(jsonObj.rain['3h'], 'number');
-				}
-				if(jsonObj.precipitation){
-					chai.assert.typeOf(jsonObj.precipitation.value, 'number');
-				}
+		it('Should present the rain in mm of last hour if present ', (done) => {
+			weatherInstance.getSmartJSON()
+				.then(d => {
+					chai.assert.typeOf(d.rain.value, 'number')
+				})
+				done()
+		})
 
-				if(!(jsonObj.rain || jsonObj.precipitation)) {
-					chai.assert.equal(jsonObj.rain, 0);
-				}
-				
-				done();
-			});
-		});
+		it('Should present 3 day weatherInstance forecast', (done) => {
+			weatherInstance.getweatherInstanceForecastForDays()
+				.then(d => {
+					expect(d).not.empty
+					expect(d.cnt).is.equal(3)
+					expect(d.list).is.not.empty
+					expect(d.list.length).is.equal(3)
+				})
+			done()
+		})
 
-		it('Should present short-term weatherInstance forecast', function(done){
-			weatherInstance.getweatherInstanceForecast(function(err, obj){
-				expect(obj).not.empty;
-                expect(obj.cnt).is.equal(40);
-				expect(obj.list).is.not.empty;
-				done();
-			});
-		});
-		it('Should present 3 day weatherInstance forecast', function(done){
+		it('Should return a smart JSON weatherInstance object ', (done) => {
+			weatherInstance.getSmartJSON()
+				.then(d => {
+					chai.assert.property(d, 'temp')
+					chai.assert.property(d, 'humidity')
+					chai.assert.property(d, 'pressure')
+					chai.assert.property(d, 'description')
+				})
+			done()
+		})
+	})	// end describe
+
+	describe('Retrive data with SSL: ', () => {
+		it('Should set the SSL to true ', () => {
+			weatherInstance.setSSL()
+			chai.assert.equal(true, weatherInstance.getSSL())
+		})
+
+		it('Should retrive temperature data (SSL)', (done) => {
+			weatherInstance.getTemperature()
+				.then(d => chai.assert.typeOf(d , 'number'))
+			done()
+		})
+
+		it('Should retrive pressure data (SSL)', (done) => {
+			weatherInstance.getPressure()
+				.then(d => chai.assert.typeOf(d , 'number'))
+			done()
+		})
+
+		it('Should retrive humidity data (SSL)', (done) => {
+			weatherInstance.getHumidity()
+				.then(d => chai.assert.typeOf(hum , 'number'))
+			done()
+		})
+
+		it('Should retrive description of Weather (SSL)', (done) => {
+			weatherInstance.getDescription()
+				.then(d => chai.assert.typeOf(desc  , 'string'))
+			done()
+		})
+
+		it('Should present all the JSON weather data (SSL)', (done) => {
+			weatherInstance.getAllweatherInstance()
+				.then(d => chai.assert.property(jsonObj , 'weatherInstance'))
+			done()
+		})
+
+		it('Should present the rain in mm of last hour (SSL)', (done) => {
+			weatherInstance.getSmartJSON()
+				.then(d => {
+					chai.assert.typeOf(jsonObj.rain, 'number')
+				})
+			done()
+		})
+
+		it('Should present short-term forecast (SSL)', (done) => {
+			weatherInstance.getweatherInstanceForecast()
+				.then(d => {
+					expect(d).not.empty
+          expect(d.cnt).is.equal(40)
+					expect(d.list).is.not.empty
+				})
+			done()
+		})
+
+		it('Should present 3 day weatherInstance forecast (SSL)', (done) => {
 			weatherInstance.getweatherInstanceForecastForDays(3, function(err, obj){
 				expect(obj).not.empty;
 				expect(obj.cnt).is.equal(3);
@@ -118,107 +178,25 @@ describe('OpenweatherInstanceMap Mocha/Chai Tests: ', () => {
 			});
 		});
 
-		it('Should return a smart JSON weatherInstance object ', function(done){
-			weatherInstance.getSmartJSON(function(err, smart){
-				chai.assert.property(smart, 'temp');
-				chai.assert.property(smart, 'humidity');
-				chai.assert.property(smart, 'pressure');
-				chai.assert.property(smart, 'description');
-				done();
-			});
-		});
-	});
+		it('Should return a smart JSON weatherInstance object (SSL)', (done) => {
+			weatherInstance.getSmartJSON()
+				.then(d => {
+					chai.assert.property(d, 'temp')
+					chai.assert.property(d, 'humidity')
+					chai.assert.property(d, 'pressure')
+					chai.assert.property(d, 'description')
+				})
+			done()
+		})
+	})
 
-	describe('Retrive data with Ssl: ', function(){
-		it('Should set the Ssl to true ', function(){
-			weatherInstance.setSsl(true);
-			chai.assert.equal(true, weatherInstance.getSsl());
-		});
-
-		it('Should retrive temperature data ', function(done){
-			weatherInstance.getTemperature(function(err, temp){
-				chai.assert.typeOf(temp , 'number');
-				done();
-			});
-		});
-		it('Should retrive pressure data ', function(done){
-			weatherInstance.getPressure(function(err, pres){
-				chai.assert.typeOf(pres , 'number');
-				done();
-			});
-		});
-		it('Should retrive humidity data ', function(done){
-			weatherInstance.getHumidity(function(err, hum){
-				chai.assert.typeOf(hum , 'number');
-				done();
-			});
-		});
-		it('Should retrive brief description of the weatherInstance ', function(done){
-			weatherInstance.getDescription(function(err, desc){
-				chai.assert.typeOf(desc  , 'string');
-				done();
-			});
-		});
-
-		it('Should present all the JSON weatherInstance response data ', function(done){
-			weatherInstance.getAllweatherInstance(function(err, jsonObj){
-				chai.assert.property(jsonObj , 'weatherInstance');
-				done();
-			});
-		});
-
-		it('Should present the rain in mm of last hour if present ', function(done) {
-			weatherInstance.getSmartJSON(function(err, jsonObj) {
-				if(jsonObj.rain){
-					chai.assert.typeOf(jsonObj.rain['3h'], 'number');
-				}
-				if(jsonObj.precipitation){
-					chai.assert.typeOf(jsonObj.precipitation.value, 'number');
-				}
-
-				if(!(jsonObj.rain || jsonObj.precipitation)) {
-					chai.assert.equal(jsonObj.rain, 0);
-				}
-				
-				done();
-			});
-		});
-
-		it('Should present short-term weatherInstance forecast', function(done){
-			weatherInstance.getweatherInstanceForecast(function(err, obj){
-				expect(obj).not.empty;
-                expect(obj.cnt).is.equal(40);
-				expect(obj.list).is.not.empty;
-				done();
-			});
-		});
-		it('Should present 3 day weatherInstance forecast', function(done){
-			weatherInstance.getweatherInstanceForecastForDays(3, function(err, obj){
-				expect(obj).not.empty;
-				expect(obj.cnt).is.equal(3);
-				expect(obj.list).is.not.empty;
-				expect(obj.list.length).is.equal(3);
-				done();
-			});
-		});
-
-		it('Should return a smart JSON weatherInstance object ', function(done){
-			weatherInstance.getSmartJSON(function(err, smart){
-				chai.assert.property(smart, 'temp');
-				chai.assert.property(smart, 'humidity');
-				chai.assert.property(smart, 'pressure');
-				chai.assert.property(smart, 'description');
-				done();
-			});
-		});
-	});
-
-	describe('Error managment section', function(){
-		it('Should show a HTTP error in the request ',function(){
-			weatherInstance.getError(function(err, data){
-				chai.assert.typeOf(err, 'error');
-			});
-		});
-	});
-
-});
+	describe('Error managment section', () => {
+		it('Should show a HTTP error in the request ',() => {
+			weatherInstance.getError()
+				.then(result => 'ok')
+				.catch(err => {
+					chai.assert.typeOf(err, 'error')
+				})
+		})
+	})
+})
