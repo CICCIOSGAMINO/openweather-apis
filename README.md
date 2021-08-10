@@ -1,112 +1,101 @@
-# openweather-apis
-Simple APIs to use with OpenWeatherMap.org free servicies, request a APPID on http://openweathermap.org/appid and start!
-
+![GitHub issues](https://img.shields.io/github/issues/CICCIOSGAMINO/openweather-apis)
+[![npm version](https://badgen.net/npm/v/@cicciosgamino/progress-ring)](https://www.npmjs.com/package/@cicciosgamino/openweather-apis)
 [![Build Status](https://travis-ci.org/CICCIOSGAMINO/openweather-apis.svg?branch=master)](https://travis-ci.org/CICCIOSGAMINO/openweather-apis)
+[![Published on webcomponents.org](https://img.shields.io/badge/webcomponents.org-published-blue.svg)](https://www.webcomponents.org/element/cicciosgamino/openweather-apis)
 
-## Intro
-Simple abstraction layer for use the services offered by the OpenWeatherMap.org website through its API's. You can easy reach the weather informations you need on over 400k weather stations. For get the APPID follow the OpenWeather.org [link][3] and complete the request process.
+# 🌞 \<openweather-apis\>
+Javascript module wrapped around the OpenWeatherMap.org APIs for free servicies (getForecast4Days() works only with pro services). First step to use the module is get OpenWeatherMap.org API key, request a APPID (API Key) on http://openweathermap.org/appid and start to get the weather data!
 
-## Version details
-Main changes by version (if the first number change, old code you have written is not supported, for
-example between version 1.x.x to version 2.x.x (I apologize for that):
+Follow the official site for more info about [OpenWeather](https://openweathermap.org/guide).
 
-+ First version  
-+ Version 1.2.0 minor bugs fix  
-+ Version 2.0.0 link in the callback for the operational error such as the ClientRequest, HTTPParse and so on ...
-+ Version 2.0.1 minor fix (no code impact)
-+ Version 2.0.2 important fix - encodeURIComponent for city name, Unexpected token handled as error
-+ Version 2.0.3 minor fix (no code impact)  
-+ Version 2.1.0 minor fix (no code impact)
-+ Version 2.1.5 minor fix (no code impact)
-+ Version 3.0.0 Removed ResponseCode function (useless)
-+ Version 3.3.0 get the rain in present in getSmartJSON 
-+ Version 4.0.0 Fix unhandled exception #26
-+ Version 4.1.0 Add ssl support (default: false) & use querystring.stringify() for path Thanks https://github.com/Ti-Tom
-+ Version 4.2.0 Minor Fix Pull request #31 Thanks https://github.com/mikedidomizio
-################################################################################################
-+ Version 5.0.0 ES6, Node 13 refactor!!! 
+<p align="center">
+  <a href="#installation">installation</a> •
+  <a href="#nodejs">nodejs</a> •
+	<a href="#web">web</a> •
+  <a href="#api">api</a> •
+  <a href="#accessibility">accessibility</a> •
+  <a href="#todo">todo</a> •
+</p>
 
 ## Installation
 Like all node packages, install and mange operation are done by npm (use the -s if you want save
-the package in the package.json file) :
+the package in the package.json file):
 
-```javascript
-	npm install openweather-apis
+```bash
+npm install @cicciosgamino/openweather-apis
 
-	// install and save in package.json
-	npm install openweather-apis --save
+# install and save dependency in package.json
+npm install @cicciosgamino/openweather-apis --save
 
-	// global installation
-	npm install -g openweather-apis
+# global installation
+npm install -g @cicciosgamino/openweather-apis
 ```
 
-## How to Use
-
-Install the package with npm, import with the require statement in the app, and start to use the apis. First
-step is set the params for the request (request the api-key at http://openweathermap.org/register ):
-
+## Node.js
+Install the package with npm, import the class you need:
 ```javascript
-	var weather = require('openweather-apis');
+import { AsyncWeather } from '../index.js'
+const weatherInstance = await new AsyncWeather()
+// retrieve the Api Key from OS env
+const apiKey = process.env['OPENWEATHER_API_KEY'] || ''
+// or copy the Api Key into
+const apiKey = 'sdgfd5g5f46...your_api_key_here'
 
-	weather.setLang('it');
-	// English - en, Russian - ru, Italian - it, Spanish - es (or sp),
-	// Ukrainian - uk (or ua), German - de, Portuguese - pt,Romanian - ro,
-	// Polish - pl, Finnish - fi, Dutch - nl, French - fr, Bulgarian - bg,
-	// Swedish - sv (or se), Chinese Tra - zh_tw, Chinese Sim - zh (or zh_cn),
-	// Turkish - tr, Croatian - hr, Catalan - ca
+weather.setLang('it')
+// English - en, Russian - ru, Italian - it, Spanish - es (or sp),
+// Ukrainian - uk (or ua), German - de, Portuguese - pt,Romanian - ro,
+// Polish - pl, Finnish - fi, Dutch - nl, French - fr, Bulgarian - bg,
+// Swedish - sv (or se), Chinese Tra - zh_tw, Chinese Sim - zh (or zh_cn),
+// Turkish - tr, Croatian - hr, Catalan - ca
 
 
-	// set city by name
-	weather.setCity('Fairplay');
- 	// or set the coordinates (latitude,longitude)
-	weather.setCoordinate(50.0467656, 20.0048731);
-	// or set city by ID (recommended by OpenWeatherMap)
-	weather.setCityId(4367872);
+// set city by name
+weather.setCity('Bergamo')
+// or set the coordinates (latitude,longitude)
+weather.setCoordinates(50.0467656, 20.0048731)
+// or set city by ID (recommended by OpenWeatherMap)
+weather.setCityId(4367872)
+// or set zip code
+weather.setZipCode(33615)
+// 'metric'  'internal'  'imperial'
+weather.setUnits('metric')
+// check http://openweathermap.org/appid#get for get the APPID
+weather.setApiKey(apiKey)
 
-    // or set zip code
-	weather.setZipCode(33615);
 
-	// 'metric'  'internal'  'imperial'
- 	weather.setUnits('metric');
-
-	// check http://openweathermap.org/appid#get for get the APPID
- 	weather.setAPPID(ownKey);
 ```
 
+## Web
 
-
-## Current Weather Data
-Using the following requests to API, you can get current weather data for any location on the Earth. Current weather data are updated in real time based on data from global weather providers and more than 40,000 weather stations. Weather data is available in JSON.
 
 ## Methods
 Import the module and start to use the functions :
 
 ```javascript
+// get the Temperature  
+weather.getTemperature(function(err, temp){
+	console.log(temp);
+});
 
-	// get the Temperature  
-	weather.getTemperature(function(err, temp){
-		console.log(temp);
-	});
+// get the Atm Pressure
+weather.getPressure(function(err, pres){
+	console.log(pres);
+});
 
-	// get the Atm Pressure
-	weather.getPressure(function(err, pres){
-		console.log(pres);
-	});
+// get the Humidity
+weather.getHumidity(function(err, hum){
+	console.log(hum);
+});
 
-	// get the Humidity
-	weather.getHumidity(function(err, hum){
-		console.log(hum);
-	});
+// get the Description of the weather condition
+weather.getDescription(function(err, desc){
+	console.log(desc);
+});
 
-	// get the Description of the weather condition
-	weather.getDescription(function(err, desc){
-		console.log(desc);
-	});
-
-	// get all the JSON file returned from server (rich of info)
-	weather.getAllWeather(function(err, JSONObj){
-		console.log(JSONObj);
-	});
+// get all the JSON file returned from server (rich of info)
+weather.getAllWeather(function(err, JSONObj){
+	console.log(JSONObj);
+});
 ```
 
 This function returns a complete openweathermap.org json object :

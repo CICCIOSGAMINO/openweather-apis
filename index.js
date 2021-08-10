@@ -2,11 +2,11 @@ let fetch, nodeFetch, Headers, Request
 
 export class AsyncWeather {
   #language = 'it'
-  #state = 'Italy'
+  #state = 'IT'
   #city = 'Bergamo'
   #cityId = ''
   #zipCode = ''
-  #appId= ''
+  #apiKey= ''
   #host = 'https://api.openweathermap.org'
   #path = '/data/2.5/weather?'
   #format = 'json'
@@ -60,6 +60,24 @@ export class AsyncWeather {
    */
   getLang () {
     return this.#language
+  }
+
+/**
+ * Setter for the state code
+ *
+ * @param {String} language - String state code
+ */
+    setState (state) {
+    this.#state = String(state).toUpperCase
+  }
+
+  /**
+   * Getter for the state
+   *
+   * @returns {String} - state code string
+   */
+  getState () {
+    return this.#state
   }
 
   /**
@@ -157,39 +175,21 @@ export class AsyncWeather {
   }
 
   /**
-   * Setter for the appId
+   * Setter for the apiKey
    *
-   * @param {String} appId - String appId to set
+   * @param {String} apiKey - String apiKey to set
    */
-  setAppId (appId) {
-    this.#appId = appId
+  setApiKey (apiKey) {
+    this.#apiKey = apiKey
   }
 
   /**
-   * Getter for the appId
+   * Getter for the apiKey
    *
-   * @returns {String} - appid string
+   * @returns {String} - apiKey string
    */
-  getAppId () {
-    return this.#appId
-  }
-
-  /**
-   * Setter for SSL
-   *
-   * @param {Boolean} SSL - Active SSL
-   */
-  setSSL () {
-    this.#SSL = true
-  }
-
-   /**
-   * Getter for SSL
-   *
-   * @returns {Boolean} - true if active
-   */
-  getSSL () {
-    return this.#SSL
+  getApiKey () {
+    return this.#apiKey
   }
 
   /**
@@ -201,11 +201,16 @@ export class AsyncWeather {
     const p = new Promise((resolve, reject) => {
       this.#handleFetch()
         .then(data => {
-          // actual openweather map apis
-          if (data.main.temp && typeof data.main.temp === 'number') {
-            resolve(data.main.temp)
+          // check if is a 20x / 30x response
+          if (data.cod > 199 && data.cod < 400) {
+            if (data.main.temp && typeof data.main.temp === 'number') {
+              resolve(data.main.temp)
+            } else {
+              reject(new Error('Temperature data NOT found or in bad format.'))
+            }
           } else {
-            reject(new Error('Temperature data NOT found or in bad format.'))
+            // handle response.cod out of ok range
+            reject(new Error(`Response Code ${data.cod} >> ${data.message}`))
           }
         })
         .catch(err => {
@@ -224,10 +229,16 @@ export class AsyncWeather {
     const p = new Promise((resolve, reject) => {
       this.#handleFetch()
         .then(data => {
-          if (data.main.pressure && typeof data.main.pressure === 'number') {
-            resolve(data.main.pressure)
+          // check if is a 20x / 30x response
+          if (data.cod > 199 && data.cod < 400) {
+            if (data.main.pressure && typeof data.main.pressure === 'number') {
+              resolve(data.main.pressure)
+            } else {
+              reject(new Error('Pressure data NOT found or in bad format.'))
+            }
           } else {
-            reject(new Error('Pressure data NOT found or in bad format.'))
+            // handle response.cod out of ok range
+            reject(new Error(`Response Code ${data.cod} >> ${data.message}`))
           }
         })
         .catch(err => {
@@ -246,10 +257,16 @@ export class AsyncWeather {
     const p = new Promise((resolve, reject) => {
       this.#handleFetch()
         .then(data => {
-          if (data.main.humidity && typeof data.main.humidity === 'number') {
-            resolve(data.main.humidity)
+          // check if is a 20x / 30x response
+          if (data.cod > 199 && data.cod < 400) {
+            if (data.main.humidity && typeof data.main.humidity === 'number') {
+              resolve(data.main.humidity)
+            } else {
+              reject(new Error('Humidity data NOT found or in bad format.'))
+            }
           } else {
-            reject(new Error('Humidity data NOT found or in bad format.'))
+            // handle response.cod out of ok range
+            reject(new Error(`Response Code ${data.cod} >> ${data.message}`))
           }
         })
         .catch(err => {
@@ -268,10 +285,16 @@ export class AsyncWeather {
     const p = new Promise((resolve, reject) => {
       this.#handleFetch()
         .then(data => {
-          if (data.weather.main && typeof data.weather.main === 'string') {
-            resolve(data.weather.main)
+          // check if is a 20x / 30x response
+          if (data.cod > 199 && data.cod < 400) {
+            if (data.weather.main && typeof data.weather.main === 'string') {
+              resolve(data.weather.main)
+            } else {
+              reject(new Error('Weather Info NOT found or in bad format.'))
+            }
           } else {
-            reject(new Error('Weather Info NOT found or in bad format.'))
+            // handle response.cod out of ok range
+            reject(new Error(`Response Code ${data.cod} >> ${data.message}`))
           }
         })
         .catch(err => {
@@ -290,10 +313,18 @@ export class AsyncWeather {
     const p = new Promise((resolve, reject) => {
       this.#handleFetch()
         .then(data => {
-          if (data.weather.description && typeof data.weather.description === 'string') {
-            resolve(data.weather.description)
+          // check if is a 20x / 30x response
+          if (data.cod > 199 && data.cod < 400) {
+            if (data.weather[0].description && 
+                  typeof data.weather[0].description === 'string'
+              ) {
+              resolve(data.weather[0].description)
+            } else {
+              reject(new Error('Weather Description NOT found or in bad format.'))
+            }
           } else {
-            reject(new Error('Weather Description NOT found or in bad format.'))
+            // handle response.cod out of ok range
+            reject(new Error(`Response Code ${data.cod} >> ${data.message}`))
           }
         })
         .catch(err => {
@@ -313,7 +344,13 @@ export class AsyncWeather {
     return new Promise((resolve, reject) => {
       this.#handleFetch()
         .then(data => {
-          resolve(JSON.stringify(data))
+          // check if is a 20x / 30x response
+          if (data.cod > 199 && data.cod < 400) {
+            resolve(data)
+          } else {
+            // handle response.cod out of ok range
+            reject(new Error(`Response Code ${data.cod} >> ${data.message}`))
+          }
         })
         .catch(err => {
           reject(err)
@@ -321,16 +358,66 @@ export class AsyncWeather {
     })
   }
 
-  getWeatherForecastForDays () {
+  /**
+   * Get the hourly forecast for 4 days MAX
+   * https://openweathermap.org/api/hourly-forecast
+   * @returns Promise(data, error)
+   */
+  getForecast4Days (cnt) {
     return new Promise((resolve, reject) => {
-      this.#handleFetch()
+      this.#handleProFetch(cnt)
         .then(data => {
-          resolve(JSON.stringify(data))
+          // check if is a 20x / 30x response
+          if (data.cod > 199 && data.cod < 400) {
+            resolve(data)
+          } else {
+            // handle response.cod out of ok range
+            reject(new Error(`Response Code ${data.cod} >> ${data.message}`))
+          }
         })
         .catch(err => {
           reject(err)
         })
-    })
+      })
+  }
+
+  /**
+   * Wrapper around the fetch to open-weather pro endpoint, here 
+   * where the URL is build
+   *
+   */
+  #handleProFetch(cnt) {
+
+    // compose the path for the forecast request
+    const host = 'https://pro.openweathermap.org'
+    const path = '/data/2.5/forecast/hourly?'
+    const searchParams = new URLSearchParams('')
+    searchParams.append('q', `${this.#city},${this.#state}`)
+    searchParams.append('units', this.#units)
+    searchParams.append('lang', this.#language)
+    searchParams.append('mode', this.#format)
+    // cnt number of timestamps in response (hours 1 - 96)
+    if (isNaN(cnt) || cnt < 1 || cnt > 97) {
+      cnt = 1
+    }
+    searchParams.append('cnt', cnt)
+    searchParams.append('APPID', this.#apiKey)
+
+    const requestURL = host + path + searchParams.toString()
+
+    // set the headers and the HTTP request
+    const headers = new Headers()
+    const request = new Request(
+      requestURL,
+      {
+        method: 'GET',
+        headers,
+        mode: 'cors',
+        cache: 'default'
+      })
+
+    return fetch(request)
+      .then(response => response.json())
   }
 
   /**
@@ -341,14 +428,20 @@ export class AsyncWeather {
     const p = new Promise((resolve, reject) => {
       this.#handleFetch()
         .then(data => {
-          resolve({
-            temp: data?.main?.temp,
-            humidity: data?.main?.humidity,
-            pressure: data?.main?.pressure,
-            description: data.weather[0]?.description,
-            weathercode: data.weather[0]?.id,
-            rain: data?.precipitation
-          })
+          // check if is a 20x / 30x response
+          if (data.cod > 199 && data.cod < 400) {
+            resolve({
+              temp: data?.main?.temp,
+              humidity: data?.main?.humidity,
+              pressure: data?.main?.pressure,
+              description: data.weather[0]?.description,
+              weathercode: data.weather[0]?.id,
+              rain: data?.precipitation
+            })
+          } else {
+            // handle response.cod out of ok range
+            reject(new Error(`Response Code ${data.cod} >> ${data.message}`))
+          }
 
         })
         .catch(err => {
@@ -377,10 +470,11 @@ export class AsyncWeather {
     const hostPath = `${this.#host + this.#path}`
     const searchParams = new URLSearchParams('')
     searchParams.append('q', this.#city)
+    // searchParams.append('q', `${this.#city},${this.#state}`)
     searchParams.append('units', this.#units)
     searchParams.append('lang', this.#language)
     searchParams.append('mode', this.#format)
-    searchParams.append('APPID', this.#appId)
+    searchParams.append('APPID', this.#apiKey)
 
     const requestURL = hostPath + searchParams.toString()
 

@@ -4,13 +4,13 @@ import chai from 'chai'
 const expect = chai.expect
 const weatherInstance = await new AsyncWeather()
 
-const myAppId = process.env['OPENWEATHER_API_KEY'] || ''
+const apiKey = process.env['OPENWEATHER_API_KEY'] || ''
 
 describe('OpenweatherInstanceMap Mocha/Chai Tests: ', () => {
 	describe('Settings: ', () => {
-		it('Should set the AppId >> ', () => {
-			weatherInstance.setAppId(myAppId)
-			chai.assert.equal(myAppId, weatherInstance.getAppId())
+		it('Should set the API Key >> ', () => {
+			weatherInstance.setApiKey(apiKey)
+			chai.assert.equal(apiKey, weatherInstance.getApiKey())
 		})
 
 		it('Should set the language to Italia (it) >> ', () => {
@@ -49,26 +49,36 @@ describe('OpenweatherInstanceMap Mocha/Chai Tests: ', () => {
 			weatherInstance.getTemperature()
 				.then(d => {
 					chai.assert.typeOf(d , 'number')
+					done()
 				})
-				done()
+				.catch(err => done(err))
 		})
 
 		it('Should retrive pressure data ', (done) => {
 			weatherInstance.getPressure()
-				.then(d => chai.assert.typeOf(d , 'number'))
-				done()
+				.then(d => {
+					chai.assert.typeOf(d , 'number')
+					done()
+				})
+				.catch(err => done(err))
 		})
 		
 		it('Should retrive humidity data ', (done) => {
 			weatherInstance.getHumidity()
-				.then(d => chai.assert.typeOf(d , 'number'))
-				done()
+				.then(d => {
+					chai.assert.typeOf(d , 'number')
+					done()
+				})
+				.catch(err => done(err))
 		})
 
 		it('Should retrive weather info', (done) => {
 			weatherInstance.getDescription()
-				.then(d => chai.assert.typeOf(d , 'string'))
-				done()
+				.then(d => {
+					chai.assert.typeOf(d , 'string')
+					done()
+				})
+				.catch(err => done(err))
 		})
 
 		it('Should retrive weather brief description', (done) => {
@@ -77,29 +87,40 @@ describe('OpenweatherInstanceMap Mocha/Chai Tests: ', () => {
 				done()
 		})
 
-		it('Should present all the JSON weatherInstance response data' , (done) => {
+		it('Should present all the JSON response data' , (done) => {
 			weatherInstance.getAllWeather()
-				.then(d => chai.assert.property(jsonObj , 'weatherInstance'))
-				done()
+				.then(jsonObj => {
+					chai.assert.property(jsonObj , 'weather')
+					chai.assert.property(jsonObj , 'main')
+					chai.assert.property(jsonObj , 'name')
+					done()
+				})
+				.catch(err => done(err))
 		})
 
 		it('Should present the rain in mm of last hour if present ', (done) => {
 			weatherInstance.getSmartJSON()
 				.then(d => {
-					chai.assert.typeOf(d.rain.value, 'number')
+					if (d.rain) {
+						chai.assert.typeOf(d.rain, 'number')
+					} else {
+						expect(d.rain).to.be.undefined
+					}
+					done()
 				})
-				done()
+				.catch(err => done(err))
 		})
 
-		it('Should present 3 day weatherInstance forecast', (done) => {
-			weatherInstance.getweatherInstanceForecastForDays()
+		it('Should present MAX 4 day (8h) weatherInstance forecast', (done) => {
+			weatherInstance.getForecast4Days(8)
 				.then(d => {
 					expect(d).not.empty
-					expect(d.cnt).is.equal(3)
+					expect(d.cnt).is.equal(8)
 					expect(d.list).is.not.empty
-					expect(d.list.length).is.equal(3)
+					expect(d.list.length).is.equal(8)
+					done()
 				})
-			done()
+				.catch(err => done(err))
 		})
 
 		it('Should return a smart JSON weatherInstance object ', (done) => {
@@ -109,93 +130,19 @@ describe('OpenweatherInstanceMap Mocha/Chai Tests: ', () => {
 					chai.assert.property(d, 'humidity')
 					chai.assert.property(d, 'pressure')
 					chai.assert.property(d, 'description')
+					done()
 				})
-			done()
+				.catch(err => done(err))
 		})
 	})	// end describe
-
-	describe('Retrive data with SSL: ', () => {
-		it('Should set the SSL to true ', () => {
-			weatherInstance.setSSL()
-			chai.assert.equal(true, weatherInstance.getSSL())
-		})
-
-		it('Should retrive temperature data (SSL)', (done) => {
-			weatherInstance.getTemperature()
-				.then(d => chai.assert.typeOf(d , 'number'))
-			done()
-		})
-
-		it('Should retrive pressure data (SSL)', (done) => {
-			weatherInstance.getPressure()
-				.then(d => chai.assert.typeOf(d , 'number'))
-			done()
-		})
-
-		it('Should retrive humidity data (SSL)', (done) => {
-			weatherInstance.getHumidity()
-				.then(d => chai.assert.typeOf(hum , 'number'))
-			done()
-		})
-
-		it('Should retrive description of Weather (SSL)', (done) => {
-			weatherInstance.getDescription()
-				.then(d => chai.assert.typeOf(desc  , 'string'))
-			done()
-		})
-
-		it('Should present all the JSON weather data (SSL)', (done) => {
-			weatherInstance.getAllweatherInstance()
-				.then(d => chai.assert.property(jsonObj , 'weatherInstance'))
-			done()
-		})
-
-		it('Should present the rain in mm of last hour (SSL)', (done) => {
-			weatherInstance.getSmartJSON()
-				.then(d => {
-					chai.assert.typeOf(jsonObj.rain, 'number')
-				})
-			done()
-		})
-
-		it('Should present short-term forecast (SSL)', (done) => {
-			weatherInstance.getweatherInstanceForecast()
-				.then(d => {
-					expect(d).not.empty
-          expect(d.cnt).is.equal(40)
-					expect(d.list).is.not.empty
-				})
-			done()
-		})
-
-		it('Should present 3 day weatherInstance forecast (SSL)', (done) => {
-			weatherInstance.getweatherInstanceForecastForDays(3, function(err, obj){
-				expect(obj).not.empty;
-				expect(obj.cnt).is.equal(3);
-				expect(obj.list).is.not.empty;
-				expect(obj.list.length).is.equal(3);
-				done();
-			});
-		});
-
-		it('Should return a smart JSON weatherInstance object (SSL)', (done) => {
-			weatherInstance.getSmartJSON()
-				.then(d => {
-					chai.assert.property(d, 'temp')
-					chai.assert.property(d, 'humidity')
-					chai.assert.property(d, 'pressure')
-					chai.assert.property(d, 'description')
-				})
-			done()
-		})
-	})
 
 	describe('Error managment section', () => {
 		it('Should show a HTTP error in the request ',() => {
 			weatherInstance.getError()
-				.then(result => 'ok')
+				.then(result => done())
 				.catch(err => {
 					chai.assert.typeOf(err, 'error')
+					done()
 				})
 		})
 	})

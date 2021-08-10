@@ -19,11 +19,34 @@
   <title>openweather-apis</title>
 
   <style>
-    body, html  {
+    * {
+      /* reset browser defaults */
+      box-sizing: border-box;
       margin: 0;
-      font-family: Roboto, Helvetica, Arial, sans-serif;
-      padding: 2em;
-      text-align: center;
+      padding: 0;
+
+      --surface1: #fff;
+      --text1: #333;
+    }
+
+    html {
+      /* base rem unit (10px) */
+      font-size: 62.5%;
+      block-size: 100%;
+
+      background-color: var(--surface1);
+      color: var(--text1);
+    }
+
+    body {
+      padding: 3rem;
+      
+      font-family: system-ui, sans-serif;
+      font-size: 2rem;
+
+      display: grid;
+      place-content: center;
+      gap: 5rem;
     }
   </style>
   
@@ -31,10 +54,10 @@
 
 <body>
   
-  <h2>openweather-apis</h2>
+  <h2>🌞 openweather-apis</h2>
 
   <bergamo-weather
-    apiKey="e58df82a2e41b81975178a27f21319bc">
+    apiKey="889582...insert_your_api_key_here">
   </bergamo-weather>
 
   <noscript>

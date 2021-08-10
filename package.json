@@ -31,9 +31,10 @@
   "devDependencies": {
     "chai": "^4.3.4",
     "lit": "*",
-    "mocha": "^9.0.1"
+    "mocha": "^9.0.3"
   },
   "directories": {
+    "example": "examples",
     "test": "test"
   }
 }

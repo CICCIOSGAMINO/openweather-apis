@@ -16,7 +16,7 @@ class BergamoWeather extends LitElement {
     new AsyncWeather().then(w => {
       this.weatherAPI = w
       // set the apiKey
-      this.weatherAPI.setAppId(this.apiKey)
+      this.weatherAPI.setApiKey(this.apiKey)
     })
   }
 
@@ -25,11 +25,10 @@ class BergamoWeather extends LitElement {
       Bergamo >> 
       ${this.weatherAPI
           ? resolvePromise(this.weatherAPI.getTemperature())
-          : '...'}°C
+          : '...'}°C - 
 
-      <hr>
       ${this.weatherAPI
-          ? resolvePromise(this.weatherAPI.getAllWeather())
+          ? resolvePromise(this.weatherAPI.getDescription())
           : '...'}
     `
   }
