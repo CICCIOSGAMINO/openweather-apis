@@ -1,9 +1,9 @@
 import { AsyncWeather } from '../index.js'
-const weatherInstance = await new AsyncWeather()
+const weather = await new AsyncWeather()
 const apiKey = process.env['OPENWEATHER_API_KEY'] || ''
 
 // set the apiKey
-weatherInstance.setApiKey(apiKey)
+weather.setApiKey(apiKey)
 
 /* 
 weatherInstance.getTemperature()
@@ -23,24 +23,25 @@ weatherInstance.getPressure()
     console.log(error)
   }) */
 
-/* Forecast next 4h */
+/* Forecast next 4h
 weatherInstance.getForecast4Days(4)
   .then(result => {
     console.log(result)
   })
   .catch(error => {
     console.log(error)
-  })
+  }) */
 
 /* Description 
 weatherInstance.getDescription()
   .then(result => console.log(result))
   .catch(err => console.log(err)) */
 
-/* All response JSON data
-weatherInstance.getAllWeather()
+/* All response JSON data */
+weather.setZipCodeAndCountryCode(24024, 'IT')
+weather.getAllWeather()
   .then(result => console.log(result))
-  .catch(err => console.log(err)) */
+  .catch(err => console.log(err))
 
 /* Smart JSON object with weather data
 weatherInstance.getSmartJSON()

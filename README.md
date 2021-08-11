@@ -6,7 +6,7 @@
 # 🌞 \<openweather-apis\>
 Javascript module wrapped around the OpenWeatherMap.org APIs for free servicies (getForecast4Days() works only with pro services). First step to use the module is get OpenWeatherMap.org API key, request a APPID (API Key) on http://openweathermap.org/appid and start to get the weather data!
 
-Follow the official site for more info about [OpenWeather](https://openweathermap.org/guide).
+Follow the official site for more info about [OpenWeather](https://openweathermap.org/guide), and here if you want more info about the [APIs](https://openweathermap.org/current).
 
 <p align="center">
   <a href="#installation">installation</a> •
@@ -41,22 +41,65 @@ const apiKey = process.env['OPENWEATHER_API_KEY'] || ''
 // or copy the Api Key into
 const apiKey = 'sdgfd5g5f46...your_api_key_here'
 
+// You can use lang parameter to get the output in your language.
+// The contents of the description field will be translated.
 weather.setLang('it')
-// English - en, Russian - ru, Italian - it, Spanish - es (or sp),
-// Ukrainian - uk (or ua), German - de, Portuguese - pt,Romanian - ro,
-// Polish - pl, Finnish - fi, Dutch - nl, French - fr, Bulgarian - bg,
-// Swedish - sv (or se), Chinese Tra - zh_tw, Chinese Sim - zh (or zh_cn),
-// Turkish - tr, Croatian - hr, Catalan - ca
+// weather.getLang() // get the language
+// af Afrikaans - al Albanian - ar Arabic - az Azerbaijani
+// bg Bulgarian
+// ca Catalan - cz Czech
+// da Danish - de German
+// el Greek - en English - eu Basque
+// fa Persian (Farsi) - fi Finnish - fr French
+// gl Galician
+// he Hebrew - hi Hindi - hr Croatian - hu Hungarian
+// id Indonesian - it Italian
+// ja Japanese
+// kr Korean
+// la Latvian - lt Lithuanian
+// mk Macedonian
+// no Norwegian - nl Dutch
+// pl Polish - pt Portuguese - pt_br Português Brasil
+// ro Romanian - ru Russian
+// sv, se Swedish - sk Slovak - sl Slovenian - sp, es Spanish - sr Serbian
+// th Thai - tr Turkish
+// ua, uk Ukrainian
+// vi Vietnamese
+// zh_cn Chinese Simplified - zh_tw Chinese Traditional - zu Zulu
 
+// set the location, only one is used for the request if multiple locations set
+// coordinates > zip + state Code > cityId > city
+
+// set the coordinates (latitude,longitude)
+weather.setCoordinates(50.0467656, 20.0048731)
+// weather.getCoordinates() { latitude: '', longitude: '' }
+
+// or set zip code and a valid country code
+// 'AD', 'AE', 'AF', 'AG', 'AI','AL', 'AM', 'AO', 'AQ', 'AR', 'AS', 'AT', 'AU', 'AW', 'AX', 'AZ',
+// 'BA', 'BB', 'BD', 'BE', 'BF', 'BG', 'BH', 'BI', 'BJ', 'BL', 'BM', 'BN', 'BO', 'BQ', 'BR', 'BS','BT', 'BV', 'BW', 'BY', 'BZ',
+// 'CA', 'CC', 'CD', 'CF', 'CG', 'CH', 'CI', 'CK', 'CL', 'CM', 'CN', 'CO', 'CR', 'CU', 'CV', 'CW', 'CX', 'CY', 'CZ',
+// 'DE', 'DJ', 'DK', 'DM', 'DO', 'DZ', 'EC', 'EE', 'EG', 'EH', 'ER', 'ES', 'ET', 'FI', 'FJ', 'FK', 'FM', 'FO', 'FR',
+// 'GA', 'GB', 'GD', 'GE', 'GF', 'GG', 'GH', 'GI', 'GL', 'GM', 'GN', 'GP', 'GQ', 'GR', 'GS', 'GT', 'GU', 'GW', 'GY', 'HK', 'HM', 'HN', 'HR', 'HT', 'HU',
+// 'ID', 'IE', 'IL', 'IM', 'IN', 'IO', 'IQ', 'IR', 'IS', 'IT', 'JE', 'JM', 'JO', 'JP',
+// 'KE', 'KG', 'KH', 'KI', 'KM', 'KN', 'KP', 'KR', 'KW', 'KY', 'KZ', 'LA', 'LB', 'LC', 'LI', 'LK', 'LR', 'LS', 'LT', 'LU', 'LV', 'LY',
+// 'MA', 'MC', 'MD', 'ME', 'MF', 'MG', 'MH', 'MK', 'ML', 'MM', 'MN', 'MO', 'MP', 'MQ', 'MR', 'MS', 'MT', 'MU', 'MV', 'MW', 'MX', 'MY', 'MZ',
+// 'NA', 'NC', 'NE', 'NF', 'NG', 'NI', 'NL', 'NO', 'NP', 'NR', 'NU', 'NZ','OM', 'PA', 'PE', 'PF', 'PG', 'PH', 'PK', 'PL', 'PM', 'PN', 'PR', 'PS', 'PT', 'PW', 'PY',
+// 'QA', 'RE', 'RO', 'RS', 'RU', 'RW',
+// 'SA', 'SB', 'SC', 'SD', 'SE', 'SG', 'SH', 'SI', 'SJ', 'SK', 'SL', 'SM', 'SN', 'SO', 'SR', 'SS', 'ST', 'SV', 'SX', 'SY', 'SZ',
+// 'TC', 'TD', 'TF', 'TG', 'TH', 'TJ', 'TK', 'TL', 'TM', 'TN', 'TO', 'TR', 'TT', 'TV', 'TW', 'TZ',
+// 'UA', 'UG', 'UM', 'US', 'UY', 'UZ', 'VA', 'VC', 'VE', 'VG', 'VI', 'VN', 'VU', 'WF', 'WS', 'YE', 'YT',
+// 'ZA', 'ZM', 'ZW'
+weather.setZipCodeAndCountryCode(33615)
+
+// or set city by ID, check the IDs in the file city.list.json.gz
+// http://bulk.openweathermap.org/sample/
+weather.setCityId(4367872)
+// weather.getCityId()	// get the city ID
 
 // set city by name
 weather.setCity('Bergamo')
-// or set the coordinates (latitude,longitude)
-weather.setCoordinates(50.0467656, 20.0048731)
-// or set city by ID (recommended by OpenWeatherMap)
-weather.setCityId(4367872)
-// or set zip code
-weather.setZipCode(33615)
+// weather.getCity()	// get the city name
+
 // 'metric'  'internal'  'imperial'
 weather.setUnits('metric')
 // check http://openweathermap.org/appid#get for get the APPID
@@ -167,8 +210,12 @@ you need to handle the error on the request, for example :
 			});
 ```
 
+## TODO
+
+[] - Implement Cities within a rectangle zone function
+[] - Implement Cities in circle function
+
 ## Test
-The package is tested with mocha and chai. You can find the tests in the /test folder. If you need to use more tests on the
-library, open an issue on the github repo (THANKS).
+The package is tested with mocha and chai. You can find the tests in the /test folder. If you need more tests on module open an issue on the github repo (THANKS).
 
 [3]:http://openweathermap.org/appid

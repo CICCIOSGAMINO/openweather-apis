@@ -2,7 +2,7 @@ import { LitElement, html } from 'lit'
 import { resolvePromise } from '../directive/resolve-promise'
 import { AsyncWeather } from '../index.js'
 
-class BergamoWeather extends LitElement {
+class OpenweatherApis extends LitElement {
   static get properties () {
     return {
       temp: Number,
@@ -34,4 +34,4 @@ class BergamoWeather extends LitElement {
   }
 }
 
-customElements.define('bergamo-weather', BergamoWeather)
+customElements.define('openweather-apis', OpenweatherApis)

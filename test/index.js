@@ -2,60 +2,106 @@ import { AsyncWeather } from '../index.js'
 import chai from 'chai'
 
 const expect = chai.expect
-const weatherInstance = await new AsyncWeather()
+const weather = await new AsyncWeather()
 
 const apiKey = process.env['OPENWEATHER_API_KEY'] || ''
 
-describe('OpenweatherInstanceMap Mocha/Chai Tests: ', () => {
+describe('OpenweatherMap Mocha/Chai Tests: ', () => {
 	describe('Settings: ', () => {
 		it('Should set the API Key >> ', () => {
-			weatherInstance.setApiKey(apiKey)
-			chai.assert.equal(apiKey, weatherInstance.getApiKey())
+			weather.setApiKey(apiKey)
+			chai.assert.equal(apiKey, weather.getApiKey())
 		})
 
 		it('Should set the language to Italia (it) >> ', () => {
-			weatherInstance.setLang('it')
-			chai.assert.equal('it', weatherInstance.getLang().toLowerCase())
+			weather.setLang('it')
+			chai.assert.equal('it', weather.getLang().toLowerCase())
 		})
 
 		it('Should set the units to metric  >> ', () => {
-			weatherInstance.setUnits('metric')
-			chai.assert.equal('metric', weatherInstance.getUnits())
+			weather.setUnits('metric')
+			chai.assert.equal('metric', weather.getUnits())
 		})
 
-		it('Should set the City to Fairplay >> ', () => {
-			weatherInstance.setCity('Fairplay')
-			chai.assert.equal('fairplay', weatherInstance.getCity())
+		it('Should set the City to Bergamo >> ', () => {
+			weather.setCity('Bergamo')
+			chai.assert.equal('bergamo', weather.getCity())
 		})
 
 		it('Should set the coordinate to 50.0467656, 20.0048731 >> ', () => {
-			weatherInstance.setCoordinates(50.0467656, 20.0048731)
-			const coordinates = weatherInstance.getCoordinates()
+			weather.setCoordinates(50.0467656, 20.0048731)
+			const coordinates = weather.getCoordinates()
 			expect(coordinates).be.not.empty
 			expect(coordinates.latitude).be.equal('50.0467656')
 			expect(coordinates.longitude).be.equal('20.0048731')
 		})
 
 		it('Should set the City ID to 4367872 >> ', () => {
-			weatherInstance.setCityId(4367872)
-			const cityid = weatherInstance.getCityId()
+			weather.setCityId(4367872)
+			const cityid = weather.getCityId()
 			expect(cityid).be.not.empty
 			expect(cityid).be.equal('4367872')
 		})
-	})
+
+		it('Should set a valid Country code eg. IT >> ', () => {
+			weather.setZipCodeAndCountryCode('', 'IT')
+			const { zipCode, countryCode } = weather.getZipCodeAndCountryCode()
+			expect(countryCode).to.be.equal('IT')
+		})
+
+		it('Should set a not valid Country code and throw an error >> ', () => {
+			expect(() => weather.setZipCodeAndCountryCode('', 'XX'))
+				.to.throw('Country code not valid! Enter a valid contry code!')
+		})
+
+	})	// end describe
+
+	describe('Setting the location: ', () => {
+
+		it('Should retrive meteo data by Coordinates (Courmayeur)>> ', async () => {
+			weather.setCoordinates(45.789554, 6.973688)
+			const r = await weather.getAllWeather()
+			expect(r.name.toLowerCase() === 'courmayeur')
+		})
+
+		it('Should retrive meteo data by Zip Code (24121) + Country Code (IT) >> ', async () => {
+			weather.setCoordinates('', '')
+			weather.setZipCodeAndCountryCode(24121, 'IT')
+			const r = await weather.getAllWeather()
+			expect(r.name.toLowerCase() === 'bergamo')
+		})
+
+		it('Should retrive meteo data by City ID 2522818 (Ustica) >> ', async () => {
+			weather.setZipCodeAndCountryCode('', 'IT')
+			weather.setCityId(2522818)
+			const r = await weather.getAllWeather()
+			expect(r.name.toLowerCase() === 'ustica')
+		})
+
+		it('Should retrive meteo data by City Name Gandino >> ', async () => {
+			weather.setCityId('')
+			weather.setCity('Gandino')
+			const r = await weather.getAllWeather()
+			expect(r.name.toLowerCase() === 'gandino')
+		})
+
+	})	// end describe
 
 	describe('Retrive data: ', () => {
+
 		it('Should retrive temperature data >> ', (done) => {
-			weatherInstance.getTemperature()
+			weather.getTemperature()
 				.then(d => {
 					chai.assert.typeOf(d , 'number')
 					done()
 				})
-				.catch(err => done(err))
+				.catch(err => {
+					done(err)
+				})
 		})
 
-		it('Should retrive pressure data ', (done) => {
-			weatherInstance.getPressure()
+		it('Should retrive pressure data >> ', (done) => {
+			weather.getPressure()
 				.then(d => {
 					chai.assert.typeOf(d , 'number')
 					done()
@@ -63,8 +109,8 @@ describe('OpenweatherInstanceMap Mocha/Chai Tests: ', () => {
 				.catch(err => done(err))
 		})
 		
-		it('Should retrive humidity data ', (done) => {
-			weatherInstance.getHumidity()
+		it('Should retrive humidity data >> ', (done) => {
+			weather.getHumidity()
 				.then(d => {
 					chai.assert.typeOf(d , 'number')
 					done()
@@ -72,8 +118,8 @@ describe('OpenweatherInstanceMap Mocha/Chai Tests: ', () => {
 				.catch(err => done(err))
 		})
 
-		it('Should retrive weather info', (done) => {
-			weatherInstance.getDescription()
+		it('Should retrive weather brief description >> ', (done) => {
+			weather.getDescription()
 				.then(d => {
 					chai.assert.typeOf(d , 'string')
 					done()
@@ -81,14 +127,8 @@ describe('OpenweatherInstanceMap Mocha/Chai Tests: ', () => {
 				.catch(err => done(err))
 		})
 
-		it('Should retrive weather brief description', (done) => {
-			weatherInstance.getDescription()
-				.then(d => chai.assert.typeOf(d , 'string'))
-				done()
-		})
-
-		it('Should present all the JSON response data' , (done) => {
-			weatherInstance.getAllWeather()
+		it('Should present all the JSON response data >> ' , (done) => {
+			weather.getAllWeather()
 				.then(jsonObj => {
 					chai.assert.property(jsonObj , 'weather')
 					chai.assert.property(jsonObj , 'main')
@@ -98,8 +138,8 @@ describe('OpenweatherInstanceMap Mocha/Chai Tests: ', () => {
 				.catch(err => done(err))
 		})
 
-		it('Should present the rain in mm of last hour if present ', (done) => {
-			weatherInstance.getSmartJSON()
+		it('Should present the rain in mm of last hour if present >> ', (done) => {
+			weather.getSmartJSON()
 				.then(d => {
 					if (d.rain) {
 						chai.assert.typeOf(d.rain, 'number')
@@ -111,20 +151,8 @@ describe('OpenweatherInstanceMap Mocha/Chai Tests: ', () => {
 				.catch(err => done(err))
 		})
 
-		it('Should present MAX 4 day (8h) weatherInstance forecast', (done) => {
-			weatherInstance.getForecast4Days(8)
-				.then(d => {
-					expect(d).not.empty
-					expect(d.cnt).is.equal(8)
-					expect(d.list).is.not.empty
-					expect(d.list.length).is.equal(8)
-					done()
-				})
-				.catch(err => done(err))
-		})
-
-		it('Should return a smart JSON weatherInstance object ', (done) => {
-			weatherInstance.getSmartJSON()
+		it('Should return a smart JSON weather object >> ', (done) => {
+			weather.getSmartJSON()
 				.then(d => {
 					chai.assert.property(d, 'temp')
 					chai.assert.property(d, 'humidity')
@@ -136,14 +164,43 @@ describe('OpenweatherInstanceMap Mocha/Chai Tests: ', () => {
 		})
 	})	// end describe
 
-	describe('Error managment section', () => {
-		it('Should show a HTTP error in the request ',() => {
-			weatherInstance.getError()
+	describe('Pro APIs - Only with pay services :', () => {
+
+		it('Should present MAX 4 day (8h) weather forecast (PRO APIs) >> ', (done) => {
+			weather.getForecast4Days(8)
+				.then(d => {
+					expect(d).not.empty
+					expect(d.cnt).is.equal(8)
+					expect(d.list).is.not.empty
+					expect(d.list.length).is.equal(8)
+					done()
+				})
+				.catch(err => done(err))
+		})
+
+	}) // end describe
+
+	describe('Error managment section :', () => {
+
+		it('Should show a HTTP error in the request >> ',() => {
+			weather.getError()
 				.then(result => done())
 				.catch(err => {
 					chai.assert.typeOf(err, 'error')
 					done()
 				})
 		})
-	})
+
+		it('Should throw an Error when try to get data without set one location >> ', () => {
+			weather.setCity('')
+			weather.setCityId('')
+			weather.setCoordinates('', '')
+			weather.setZipCodeAndCountryCode('', 'IT')
+
+			return weather.getSmartJSON()
+				.catch((err) => {
+					expect(err.message).to.eql('No Location set! Use setCity, setCityId, setCoordinates or setZipCode before request data.')
+				})
+		})
+	})	// end describe
 })

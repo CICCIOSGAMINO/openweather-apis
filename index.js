@@ -1,9 +1,9 @@
 let fetch, nodeFetch, Headers, Request
 
 export class AsyncWeather {
-  #language = 'it'
-  #state = 'IT'
-  #city = 'Bergamo'
+  #language = ''
+  #countryCode = ''
+  #city = ''
   #cityId = ''
   #zipCode = ''
   #apiKey= ''
@@ -11,9 +11,10 @@ export class AsyncWeather {
   #path = '/data/2.5/weather?'
   #format = 'json'
   #units = 'metric'
-  #coordinates = {}
-  #SSL = false
-  #withCredentials = false
+  #coordinates = {
+    latitude: '',
+    longitude: ''
+  }
 
   constructor () {
     return (async () => {
@@ -60,24 +61,6 @@ export class AsyncWeather {
    */
   getLang () {
     return this.#language
-  }
-
-/**
- * Setter for the state code
- *
- * @param {String} language - String state code
- */
-    setState (state) {
-    this.#state = String(state).toUpperCase
-  }
-
-  /**
-   * Getter for the state
-   *
-   * @returns {String} - state code string
-   */
-  getState () {
-    return this.#state
   }
 
   /**
@@ -143,17 +126,53 @@ export class AsyncWeather {
    *
    * @param {String} zipCode - String zipCode to set
    */
-  setZipCode (zipCode) {
+  setZipCodeAndCountryCode (zipCode, countryCode) {
     this.#zipCode = String(zipCode)
+
+    // iso3166 Country code
+    const iso3166 = ['AD', 'AE', 'AF', 'AG', 'AI','AL', 'AM', 'AO', 'AQ', 'AR', 'AS', 'AT', 'AU', 'AW', 'AX', 'AZ',
+                     'BA', 'BB', 'BD', 'BE', 'BF', 'BG', 'BH', 'BI', 'BJ', 'BL', 'BM', 'BN', 'BO', 'BQ', 'BR', 'BS', 'BT', 'BV', 'BW', 'BY', 'BZ',
+                     'CA', 'CC', 'CD', 'CF', 'CG', 'CH', 'CI', 'CK', 'CL', 'CM', 'CN', 'CO', 'CR', 'CU', 'CV', 'CW', 'CX', 'CY', 'CZ',
+                     'DE', 'DJ', 'DK', 'DM', 'DO', 'DZ',
+                     'EC', 'EE', 'EG', 'EH', 'ER', 'ES', 'ET', 
+                     'FI', 'FJ', 'FK', 'FM', 'FO', 'FR',
+                     'GA', 'GB', 'GD', 'GE', 'GF', 'GG', 'GH', 'GI', 'GL', 'GM', 'GN', 'GP', 'GQ', 'GR', 'GS', 'GT', 'GU', 'GW', 'GY',
+                     'HK', 'HM', 'HN', 'HR', 'HT', 'HU',
+                     'ID', 'IE', 'IL', 'IM', 'IN', 'IO', 'IQ', 'IR', 'IS', 'IT', 
+                     'JE', 'JM', 'JO', 'JP',
+                     'KE', 'KG', 'KH', 'KI', 'KM', 'KN', 'KP', 'KR', 'KW', 'KY', 'KZ',
+                     'LA', 'LB', 'LC', 'LI', 'LK', 'LR', 'LS', 'LT', 'LU', 'LV', 'LY',
+                     'MA', 'MC', 'MD', 'ME', 'MF', 'MG', 'MH', 'MK', 'ML', 'MM', 'MN', 'MO', 'MP', 'MQ', 'MR', 'MS', 'MT', 'MU', 'MV', 'MW', 'MX', 'MY', 'MZ',
+                     'NA', 'NC', 'NE', 'NF', 'NG', 'NI', 'NL', 'NO', 'NP', 'NR', 'NU', 'NZ',
+                     'OM',
+                     'PA', 'PE', 'PF', 'PG', 'PH', 'PK', 'PL', 'PM', 'PN', 'PR', 'PS', 'PT', 'PW', 'PY',
+                     'QA',
+                     'RE', 'RO', 'RS', 'RU', 'RW',
+                     'SA', 'SB', 'SC', 'SD', 'SE', 'SG', 'SH', 'SI', 'SJ', 'SK', 'SL', 'SM', 'SN', 'SO', 'SR', 'SS', 'ST', 'SV', 'SX', 'SY', 'SZ',
+                     'TC', 'TD', 'TF', 'TG', 'TH', 'TJ', 'TK', 'TL', 'TM', 'TN', 'TO', 'TR', 'TT', 'TV', 'TW', 'TZ',
+                     'UA', 'UG', 'UM', 'US', 'UY', 'UZ',
+                     'VA', 'VC', 'VE', 'VG', 'VI', 'VN', 'VU', 
+                     'WF', 'WS',
+                     'YE', 'YT',
+                     'ZA', 'ZM', 'ZW']
+
+    if (iso3166.includes(countryCode.toUpperCase())) {
+      this.#countryCode = countryCode.toUpperCase()
+    } else {
+      throw new Error('Country code not valid! Enter a valid contry code!')
+    }
   }
 
   /**
    * Getter for the zipCode
    *
-   * @returns {String} - zipCode string
+   * @returns {String} - zipCode, state string
    */
-  getZipCode () {
-    return this.#zipCode
+   getZipCodeAndCountryCode () {
+    return {
+      zipCode: this.#zipCode,
+      countryCode: this.#countryCode
+    }
   }
 
   /**
@@ -382,45 +401,6 @@ export class AsyncWeather {
   }
 
   /**
-   * Wrapper around the fetch to open-weather pro endpoint, here 
-   * where the URL is build
-   *
-   */
-  #handleProFetch(cnt) {
-
-    // compose the path for the forecast request
-    const host = 'https://pro.openweathermap.org'
-    const path = '/data/2.5/forecast/hourly?'
-    const searchParams = new URLSearchParams('')
-    searchParams.append('q', `${this.#city},${this.#state}`)
-    searchParams.append('units', this.#units)
-    searchParams.append('lang', this.#language)
-    searchParams.append('mode', this.#format)
-    // cnt number of timestamps in response (hours 1 - 96)
-    if (isNaN(cnt) || cnt < 1 || cnt > 97) {
-      cnt = 1
-    }
-    searchParams.append('cnt', cnt)
-    searchParams.append('APPID', this.#apiKey)
-
-    const requestURL = host + path + searchParams.toString()
-
-    // set the headers and the HTTP request
-    const headers = new Headers()
-    const request = new Request(
-      requestURL,
-      {
-        method: 'GET',
-        headers,
-        mode: 'cors',
-        cache: 'default'
-      })
-
-    return fetch(request)
-      .then(response => response.json())
-  }
-
-  /**
    * Compact JSON object (SMART) with main Weather data
    * @returns {Promise<JSON>} - Promise that resolve in Smart Weather JSON data
    */
@@ -462,6 +442,72 @@ export class AsyncWeather {
      return p
    }
 
+     /**
+   * Wrapper around the fetch to open-weather pro endpoint, here 
+   * where the URL is build
+   *
+   */
+  #handleProFetch(cnt) {
+
+    // compose the path for the forecast request
+    const host = 'https://pro.openweathermap.org'
+    const path = '/data/2.5/forecast/hourly?'
+    const searchParams = new URLSearchParams('')
+    // handle the priority to set the place (coordinates, zip + state, cityId, city)
+    if (this.#coordinates.latitude !== '' && this.#coordinates.longitude !== '') {
+      searchParams.append('lat', this.#coordinates.latitude)
+      searchParams.append('lon', this.#coordinates.longitude)
+    } else if (this.#zipCode !== '') {
+      searchParams.append('zip', `${this.#zipCode},${this.#countryCode}`)
+    } else if (this.#cityId !== '') {
+      searchParams.append('id', this.#cityId)
+    } else if (this.#city !== '') {
+      searchParams.append('q', this.#city)
+    }
+
+    searchParams.append('units', this.#units)
+    searchParams.append('lang', this.#language)
+    searchParams.append('mode', this.#format)
+    // cnt number of timestamps in response (hours 1 - 96)
+    if (isNaN(cnt) || cnt < 1 || cnt > 97) {
+      cnt = 1
+    }
+    searchParams.append('cnt', cnt)
+    searchParams.append('APPID', this.#apiKey)
+
+    const requestURL = host + path + searchParams.toString()
+
+    // set the headers and the HTTP request
+    const headers = new Headers()
+    const request = new Request(
+      requestURL,
+      {
+        method: 'GET',
+        headers,
+        mode: 'cors',
+        cache: 'default'
+      })
+
+    // Check if location set
+    if (
+      this.#city !== '' || 
+      this.#cityId !== '' || 
+      (this.#zipCode !== '' && this.#countryCode) || 
+      (this.#coordinates.latitude !== '' && this.#coordinates.longitude !== '')
+      ) {
+        
+        // make the fetch request
+        return fetch(request)
+          .then(response => response.json())
+      } else {
+        // reject promise
+        return Promise.reject(
+          new Error('No Location set! Use setCity, setCityId, setCoordinates or setZipCode before request data.')
+        )
+      }
+
+  }
+
   /**
    * Wrapper around the fetch to open-weather endpoint, here the URL is build
    *
@@ -469,8 +515,18 @@ export class AsyncWeather {
   #handleFetch () {
     const hostPath = `${this.#host + this.#path}`
     const searchParams = new URLSearchParams('')
-    searchParams.append('q', this.#city)
-    // searchParams.append('q', `${this.#city},${this.#state}`)
+    // handle the priority to set the place (coordinates, zip + state, cityId, city)
+    if (this.#coordinates.latitude !== '' && this.#coordinates.longitude !== '') {
+      searchParams.append('lat', this.#coordinates.latitude)
+      searchParams.append('lon', this.#coordinates.longitude)
+    } else if (this.#zipCode !== '') {
+      searchParams.append('zip', `${this.#zipCode},${this.#countryCode}`)
+    } else if (this.#cityId !== '') {
+      searchParams.append('id', this.#cityId)
+    } else if (this.#city !== '') {
+      searchParams.append('q', this.#city)
+    }
+
     searchParams.append('units', this.#units)
     searchParams.append('lang', this.#language)
     searchParams.append('mode', this.#format)
@@ -489,7 +545,24 @@ export class AsyncWeather {
         cache: 'default'
       })
 
-    return fetch(request)
-      .then(response => response.json())
+    // Check if the location set
+    if (
+      this.#city !== '' || 
+      this.#cityId !== '' || 
+      (this.#zipCode !== '' && this.#countryCode) || 
+      (this.#coordinates.latitude !== '' && this.#coordinates.longitude !== '')
+      ) {
+        
+        // make the fetch request
+        return fetch(request)
+          .then(response => response.json())
+      } else {
+        // reject promise
+        return Promise.reject(
+          new Error('No Location set! Use setCity, setCityId, setCoordinates or setZipCode before request data.')
+        )
+      }
+
+    
   }
 }
