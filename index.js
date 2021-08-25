@@ -166,7 +166,7 @@ export class AsyncWeather {
   /**
    * Getter for the zipCode
    *
-   * @returns {String} - zipCode, state string
+   * @returns {Object} - { zipCode: '', countryCode: '' }
    */
    getZipCodeAndCountryCode () {
     return {
@@ -300,14 +300,14 @@ export class AsyncWeather {
    *
    * @returns {Promise<String>} - Promise that resolve Weather title as string
    */
-   getWetherTitle () {
+   getTitle () {
     const p = new Promise((resolve, reject) => {
       this.#handleFetch()
         .then(data => {
           // check if is a 20x / 30x response
           if (data.cod > 199 && data.cod < 400) {
-            if (data.weather.main && typeof data.weather.main === 'string') {
-              resolve(data.weather.main)
+            if (data.weather[0].main && typeof data.weather[0].main === 'string') {
+              resolve(data.weather[0].main)
             } else {
               reject(new Error('Weather Info NOT found or in bad format.'))
             }

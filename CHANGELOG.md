@@ -6,9 +6,9 @@
 ## v5.0.0 [02-05-2021]
 - `build`
   - Better errors handling, solved issue #30
-  - Only HTTPS request, HTTP not anymore! 
-  - Same APIs 
-  - Bugs fixed 
+  - Only HTTPS request, HTTP not anymore!
+  - Same APIs
+  - Bugs fixed
   - Available in Node.js and Browsers
 
 ## v4.2.0 [] 
