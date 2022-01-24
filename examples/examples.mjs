@@ -43,8 +43,8 @@ weather.getTitle()
 
 /* All weather data */
 weather.getAllWeather()
-  .then(result => console.log(result))
-  .catch(error => console.log(error))
+	.then(result => console.log(result))
+	.catch(error => console.log(error))
  
 /* Forecast next 4h
 weather.getForecast4Days(4)

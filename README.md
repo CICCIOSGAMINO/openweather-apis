@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/CICCIOSGAMINO/openweather-apis.svg?branch=master)](https://travis-ci.org/CICCIOSGAMINO/openweather-apis)
 [![Published on webcomponents.org](https://img.shields.io/badge/webcomponents.org-published-blue.svg)](https://www.webcomponents.org/element/cicciosgamino/openweather-apis)
 
-# 🌞 @cicciosgamino/openweather-apis
+# 🌞 🌨️ ❄️ @cicciosgamino/openweather-apis
 Javascript module wrapped around the OpenWeatherMap.org APIs for free servicies (getForecast4Days() works only with pro services). First step to use the module is get OpenWeatherMap.org API key, request a APPID (API Key) on http://openweathermap.org/appid and start to get the weather data!
 
 Follow the official site for more info about [OpenWeather](https://openweathermap.org/guide), and here if you want more info about the [APIs](https://openweathermap.org/current).
@@ -219,13 +219,52 @@ try {
 ```
 
 ## Web
-TODO
+The module can be used in the browser too. In the example you can see an easy example of Web Component build with Lit that use the module to retrieve the weather data:
+```javascript
+import { LitElement, html } from 'lit'
+import { resolvePromise } from '../directive/resolve-promise'
+import { AsyncWeather } from '../index.js'
 
-Comming Soon the WebComponent **openweather-apis-element**
+class OpenweatherApis extends LitElement {
+	static get properties () {
+		return {
+			temp: Number,
+			apiKey: String,
+			weatherAPI: Object
+		}
+	}
+
+	constructor () {
+		super()
+		new AsyncWeather().then(w => {
+			this.weatherAPI = w
+			// set the apiKey
+			this.weatherAPI.setApiKey(this.apiKey)
+		})
+	}
+
+	render () {
+		return html`
+      Bergamo >> 
+      ${this.weatherAPI
+		? resolvePromise(this.weatherAPI.getTemperature())
+		: '...'}°C - 
+
+      ${this.weatherAPI
+		? resolvePromise(this.weatherAPI.getDescription())
+		: '...'}
+    `
+	}
+}
+
+customElements.define('openweather-apis', OpenweatherApis)
+```
+
+
+Comming Soon the WebComponent **openweather-apis-element** build wih Lit.
 
 
 ## Errors
-TODO
 
 **Commons Errors**
 Error: Response Code 401 >> Invalid API key. Please see http://openweathermap.org/faq#error401 for more info.
@@ -247,12 +286,13 @@ The package is tested with mocha and chai. You can find the tests in the /test f
 ## Support
 Reach out to me at one of the following places:
 
+- [Web](https://cicciosgamino.web.app/)
 - [Github](https://github.com/CICCIOSGAMINO)
 - [Twitter](https://twitter.com/cicciosgamino)
 
 ## Donate
 
-Donate help and contibutions!
+Donate help and contibutions no money!
 
 ## License
 [GNU General Public License v3.0](https://github.com/CICCIOSGAMINO/init/blob/master/LICENSE)
