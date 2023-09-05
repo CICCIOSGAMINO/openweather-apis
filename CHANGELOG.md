@@ -3,6 +3,11 @@
 <!-- ## Unreleased -->
 <!-- Add new, unreleased items here. -->
 
+# v5.3.0 [05-09-2023]
+
+### Changes
+  - Update the dependency to latest node-fetch 3.3.2
+
 # v5.2.0 [24-01-2022]
 
 ## Changes

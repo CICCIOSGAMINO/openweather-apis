@@ -1,6 +1,6 @@
 {
   "name": "@cicciosgamino/openweather-apis",
-  "version": "5.2.0",
+  "version": "5.3.0",
   "description": "Simple APIs to use with OpenWeatherMap.org free servicies, request a APPID on http://openweathermap.org/appid and start!",
   "main": "index.js",
   "type": "module",
@@ -26,12 +26,12 @@
     "test": "mocha"
   },
   "dependencies": {
-    "node-fetch": "^3.2.0"
+    "node-fetch": "^3.3.2"
   },
   "devDependencies": {
-    "chai": "^4.3.4",
+    "chai": "^4.3.8",
     "lit": "*",
-    "mocha": "^9.2.0"
+    "mocha": "^10.2.0"
   },
   "directories": {
     "example": "examples",
