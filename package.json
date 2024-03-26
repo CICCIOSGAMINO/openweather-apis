@@ -1,6 +1,6 @@
 {
   "name": "openweather-apis",
-  "version": "4.4.1",
+  "version": "4.5.0",
   "description": "Simple APIs to use with OpenWeatherMap.org free servicies, request a APPID on http://openweathermap.org/appid and start!",
   "main": "index.js",
   "scripts": {
@@ -30,6 +30,6 @@
   "homepage": "https://github.com/CICCIOSGAMINO/openweather-apis",
   "devDependencies": {
     "chai": "^4.2.0",
-    "mocha": "^7.1.2"
+    "mocha": "^10.3.0"
   }
 }

@@ -1,6 +1,6 @@
 var weather = require('./index.js');
 
-weather.setAPPID('_API_KEY_');
+weather.setAPPID(process.env.API_KEY);
 weather.setLang('it');
 weather.setUnits('metric');
 //weather.setCity('roma');
