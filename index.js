@@ -232,15 +232,12 @@
     return '/data/2.5/weather?' + getCoordinate() + '&' + querystring.stringify({units: config.units, lang: config.lan, mode: 'json', APPID: config.APPID});
   }
 
-  function buildPathOneCall(){
-    return '/data/2.5/onecall?' + getCoordinate() + '&' + querystring.stringify({units: config.units, lang: config.lan, mode: 'json', APPID: config.APPID});
-  }
-
   function buildPathForecast(){
     return '/data/2.5/forecast?' + getCoordinate() + '&' + querystring.stringify({units: config.units, lang: config.lan, mode: 'json', APPID: config.APPID});
   }
 
-  function buildPathForecastForDays(days){
+// Note: Accessing the daily forecast requires an API key with a paid subscription.
+  function buildPathForecastForDays(days) {
     return '/data/2.5/forecast/daily?' + getCoordinate() + '&' + querystring.stringify({cnt: days, units: config.units, lang: config.lan, mode: 'json', APPID: config.APPID});
   }
 
@@ -249,7 +246,7 @@
   }
 
   function buildPathOneCall(){
-    return '/data/2.5/onecall?' + getCoordinate() + '&' + querystring.stringify({units: config.units, lang: config.lan, exclude: config.exclude, APPID: config.APPID});
+    return '/data/3.0/onecall?' + getCoordinate() + '&' + querystring.stringify({units: config.units, lang: config.lan, exclude: config.exclude, APPID: config.APPID});
   }
 
   function getData(url, callback, tries){
